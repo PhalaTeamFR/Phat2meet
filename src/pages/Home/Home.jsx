@@ -44,13 +44,7 @@ const Home = () => {
           id="times"
           required
         />
-
-
       </StyledMain>
-
-
-
-
       <Center>
         <Button>{"Create"}</Button>
       </Center>

@@ -7,4 +7,4 @@ export { default as TimeRangeField } from './TimeRangeField/TimeRangeField'
 export { default as CalendarField } from './CalendarField/CalendarField'
 export { default as Settings } from './Settings/Settings'
 export { default as ProviderInfo } from './ProviderInfo/ProviderInfo'
-
+export { default as Account } from './Account/Account'

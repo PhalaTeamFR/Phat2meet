@@ -1,9 +1,13 @@
-import { keyframes, styled } from 'goober'
+import { styled } from 'goober'
 
 export const StyledMain = styled('div')`
-  width: 600px;
+  width: 800px;
   margin: 20px auto;
   max-width: calc(100% - 60px);
+
+  * {
+    text-align: left;
+  }
 `
 
 export const CreateForm = styled('form')`
@@ -18,6 +22,7 @@ export const TitleSmall = styled('span')`
   color: var(--secondary);
   line-height: 1em;
   text-transform: uppercase;
+  text-align: left;
 
   ${props => !props.$altChars && `
     font-family: sans-serif;
@@ -37,6 +42,7 @@ export const TitleLarge = styled('h1')`
   font-weight: 900;
   line-height: 1em;
   text-transform: uppercase;
+  text-align: left;
 
   @media (max-width: 350px) {
     font-size: 3.5rem;

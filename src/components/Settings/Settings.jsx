@@ -1,6 +1,11 @@
 import { Settings as SettingsIcon } from 'lucide-react'
 
 import {
+  Account
+} from '/src/components'
+
+import {
+  SettingsGroup,
   OpenButton,
 } from './Settings.styles'
 
@@ -8,11 +13,12 @@ const Settings = () => {
 
   return (
     <>
-      <OpenButton
+      <SettingsGroup>
 
-        type="button"
+        <Account />
+      </SettingsGroup>
 
-      ><SettingsIcon /></OpenButton>
+
 
     </>
   )
