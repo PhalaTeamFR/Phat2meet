@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAtom } from 'jotai'
+import { atom, useAtom } from 'jotai'
 
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
@@ -13,15 +13,25 @@ import {
   ModalHeader,
   ModalBody,
   ModalCloseButton,
+  Box
 } from '@chakra-ui/react'
 
+import {
+  Button,
+} from '/src/components'
+
 export const AccountSelectModal = ({ visibleAtom }) => {
+
   const [visible, setVisible] = useAtom(visibleAtom)
 
   const [accounts, setAccounts] = useState([]);
   const [userLogin, setUserLogin] = useState(false);
   const [userWallet, setUserWallet] = useState([]);
 
+  const [selected, setSelected] = useState([])
+
+  console.log("setSelected")
+  console.log(selected)
 
   const extensionSetup = async () => {
     const extension = await web3Enable('polkadot-client-app');
@@ -60,15 +70,45 @@ export const AccountSelectModal = ({ visibleAtom }) => {
             {accounts.length !== 0 ? (
               <>
                 <p>Select the account to login</p>
-
-                <div>
+                <Box display="flex" flexDirection="column" gap={4} paddingLeft={1} maxH={80} overflowY="scroll">
                   {accounts.map((account, idx) => (
-                    <div key={idx}>
+                    <Box
+                      display="flex"
+                      flexDirection="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      p={2}
+                      border="1px solid"
+                      borderColor="gray.800"
+                      rounded="sm"
+                      _hover={{ opacity: 1, color: '#C5FF47' }}
+                      key={idx}
+                    >
+                      <b>{account.meta.name.toLowerCase()}</b>
+                      <p size='sm'>{account.address.substring(0, 6)}...{account.address.substring(account.address.length - 6)}</p>
+                      {(selected && selected.address === account.address) ? (
+                        <Button
+                          onClick={() => {
+                            setSelected(null)
+                            setVisible(false)
+                          }}
+                        >
+                          Unselect
+                        </Button>
+                      ) : (
+                        <Button
 
-                      <p>{account.address.substring(0, 6)}...{account.address.substring(account.address.length - 6)}</p>
-                    </div>
+                          onClick={() => {
+                            setSelected(account)
+                            setVisible(false)
+                          }}
+                        >
+                          Select
+                        </Button>
+                      )}
+                    </Box>
                   ))}
-                </div>
+                </Box>
               </>
             ) : (
               ""
@@ -78,8 +118,6 @@ export const AccountSelectModal = ({ visibleAtom }) => {
                 <p>Polkadot Wallet Address:<strong>{userWallet}</strong></p>
               </>
             )}
-
-
           </div>
         </ModalBody>
       </ModalContent>
