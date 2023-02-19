@@ -4,7 +4,7 @@ import { atom, useAtom } from 'jotai'
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 
-import { rpcEndpointAtom } from '../../Atoms/Foundation'
+import { rpcEndpointAtom } from '../Atoms/Foundation'
 
 import {
   Modal,

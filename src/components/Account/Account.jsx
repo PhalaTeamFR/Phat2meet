@@ -3,8 +3,8 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 
 import { atom, useAtom } from 'jotai'
-import { AccountSelectModal } from '../identity/components/AccountSelectModal'
-import ConnectWalletButton from '../identity/components/ConnectWalletButton'
+import { AccountSelectModal } from '../Identity/AccountSelectModal'
+import ConnectWalletButton from '../Identity/ConnectWalletButton'
 
 import { rpcEndpointAtom } from '../Atoms/Foundation'
 
