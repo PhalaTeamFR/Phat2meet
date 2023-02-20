@@ -12,6 +12,9 @@ import {
   Button,
 } from '/src/components'
 
+import {
+  currentAccountAtom,
+} from '../Identity/Atoms'
 
 function Account() {
 
@@ -19,6 +22,8 @@ function Account() {
 
   const [endpoint] = useAtom(rpcEndpointAtom);
   const accountSelectModalVisibleAtom = atom(false)
+
+
 
   const setup = async () => {
     try {
@@ -39,9 +44,9 @@ function Account() {
   return (
     <>
       <AccountSelectModal visibleAtom={accountSelectModalVisibleAtom} />
-      {api ? (
+      {api && (
         <ConnectWalletButton visibleAtom={accountSelectModalVisibleAtom} />
-      ) : ("")}
+      )}
     </>
   );
 }

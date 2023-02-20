@@ -20,6 +20,12 @@ import {
   Button,
 } from '/src/components'
 
+import {
+  currentAccountAtom,
+} from './Atoms'
+
+import trimAddress from './TrimAddress'
+
 export const AccountSelectModal = ({ visibleAtom }) => {
 
   const [visible, setVisible] = useAtom(visibleAtom)
@@ -28,12 +34,10 @@ export const AccountSelectModal = ({ visibleAtom }) => {
   const [userLogin, setUserLogin] = useState(false);
   const [userWallet, setUserWallet] = useState([]);
 
-  const [selected, setSelected] = useState([])
-
-  console.log("setSelected")
-  console.log(selected)
+  const [selectedWallet, setSelectedWallet] = useAtom(currentAccountAtom);
 
   const extensionSetup = async () => {
+
     const extension = await web3Enable('polkadot-client-app');
     if (extension.length === 0) {
       console.log('No extension Found');
@@ -85,11 +89,11 @@ export const AccountSelectModal = ({ visibleAtom }) => {
                       key={idx}
                     >
                       <b>{account.meta.name.toLowerCase()}</b>
-                      <p size='sm'>{account.address.substring(0, 6)}...{account.address.substring(account.address.length - 6)}</p>
-                      {(selected && selected.address === account.address) ? (
+                      <p size='sm'>{trimAddress(account.address)}</p>
+                      {(selectedWallet && selectedWallet.address === account.address) ? (
                         <Button
                           onClick={() => {
-                            setSelected(null)
+                            setSelectedWallet(null)
                             setVisible(false)
                           }}
                         >
@@ -99,7 +103,7 @@ export const AccountSelectModal = ({ visibleAtom }) => {
                         <Button
 
                           onClick={() => {
-                            setSelected(account)
+                            setSelectedWallet(account)
                             setVisible(false)
                           }}
                         >
