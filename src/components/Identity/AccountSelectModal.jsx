@@ -60,7 +60,6 @@ export const AccountSelectModal = ({ visibleAtom }) => {
   }, [])
 
   return (
-
     <Modal isOpen={visible} onClose={() => setVisible(false)}>
       <ModalOverlay />
       <ModalContent>
@@ -70,8 +69,7 @@ export const AccountSelectModal = ({ visibleAtom }) => {
         <ModalCloseButton />
         <ModalBody>
           <div className="Account">
-
-            {accounts.length !== 0 ? (
+            {accounts.length !== 0 && (
               <>
                 <p>Select the account to login</p>
                 <Box display="flex" flexDirection="column" gap={4} paddingLeft={1} maxH={80} overflowY="scroll">
@@ -93,7 +91,7 @@ export const AccountSelectModal = ({ visibleAtom }) => {
                       {(selectedWallet && selectedWallet.address === account.address) ? (
                         <Button
                           onClick={() => {
-                            setSelectedWallet(null)
+                            setSelectedWallet()
                             setVisible(false)
                           }}
                         >
@@ -101,7 +99,6 @@ export const AccountSelectModal = ({ visibleAtom }) => {
                         </Button>
                       ) : (
                         <Button
-
                           onClick={() => {
                             setSelectedWallet(account)
                             setVisible(false)
@@ -114,8 +111,6 @@ export const AccountSelectModal = ({ visibleAtom }) => {
                   ))}
                 </Box>
               </>
-            ) : (
-              ""
             )}
             {userLogin && (
               <>

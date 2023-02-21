@@ -70,9 +70,6 @@ const ProviderInfo = () => {
   const [result, setResult] = useState("");
   const [endpoint] = useAtom(rpcEndpointAtom)
 
-  console.log("endpoint ProviderInfo")
-  console.log(endpoint)
-
   useEffect(() => {
     async function main() {
       // Initialise the provider to connect to the local node

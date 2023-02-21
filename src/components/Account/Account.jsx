@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 
-import { atom, useAtom } from 'jotai'
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { AccountSelectModal } from '../Identity/AccountSelectModal'
 import ConnectWalletButton from '../Identity/ConnectWalletButton'
 
@@ -13,7 +13,7 @@ import {
 } from '/src/components'
 
 import {
-  currentAccountAtom,
+  currentProfileAtom,
 } from '../Identity/Atoms'
 
 function Account() {
@@ -22,8 +22,6 @@ function Account() {
 
   const [endpoint] = useAtom(rpcEndpointAtom);
   const accountSelectModalVisibleAtom = atom(false)
-
-
 
   const setup = async () => {
     try {
@@ -41,11 +39,17 @@ function Account() {
   useEffect(() => {
     setup();
   }, [])
+
+  const profile = useAtomValue(currentProfileAtom)
+
+  console.log("profile currentProfileAtom");
+  console.log(profile);
+
   return (
     <>
       <AccountSelectModal visibleAtom={accountSelectModalVisibleAtom} />
       {api && (
-        <ConnectWalletButton visibleAtom={accountSelectModalVisibleAtom} />
+        <ConnectWalletButton visibleAtom={accountSelectModalVisibleAtom} children={profile.meta.name} />
       )}
     </>
   );
