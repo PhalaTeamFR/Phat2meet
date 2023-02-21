@@ -1,13 +1,15 @@
+import { useEffect } from 'react';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { atom } from 'jotai'
 
-await web3Enable('polkadot-client-app');
-export const injectedAccountWithMeta = await web3Accounts();
+async function getAccounts() {
+  await web3Enable('polkadot-client-app');
+  const injectedAccountWithMeta = await web3Accounts();
 
-console.log("injectedAccountWithMeta");
-console.log(injectedAccountWithMeta);
+  return injectedAccountWithMeta;
+}
 
-export const availableAccountsAtom = atom(injectedAccountWithMeta)
+export const availableAccountsAtom = atom(getAccounts());
 console.log("availableAccountsAtom");
 console.log(availableAccountsAtom);
 
