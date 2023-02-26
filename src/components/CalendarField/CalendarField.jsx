@@ -4,17 +4,12 @@ import isToday from 'dayjs/plugin/isToday'
 import localeData from 'dayjs/plugin/localeData'
 import updateLocale from 'dayjs/plugin/updateLocale'
 
-import { Button, ToggleField } from '/src/components'
-
 import {
   Wrapper,
   StyledLabel,
   StyledSubLabel,
-  CalendarHeader,
-  CalendarDays,
   CalendarBody,
   Date,
-  Day,
 } from './CalendarField.styles'
 
 dayjs.extend(isToday)
@@ -57,17 +52,7 @@ const CalendarField = forwardRef(({
 
   const [type] = useState(1)
 
-  const [dates, setDates] = useState(calculateMonth(dayjs().month(), dayjs().year(), weekStart))
-  const [month, setMonth] = useState(dayjs().month())
-  const [year, setYear] = useState(dayjs().year())
-
-  const [selectedDates, setSelectedDates] = useState([])
-  const [selectingDates, _setSelectingDates] = useState([])
-  const staticSelectingDates = useRef([])
-  const setSelectingDates = newDates => {
-    staticSelectingDates.current = newDates
-    _setSelectingDates(newDates)
-  }
+  const [selectedDates] = useState([])
 
   const [selectedDays, setSelectedDays] = useState([])
   const [selectingDays, _setSelectingDays] = useState([])
@@ -91,8 +76,8 @@ const CalendarField = forwardRef(({
     if (dayjs.Ls?.[locale] && weekStart !== dayjs.Ls[locale].weekStart) {
       dayjs.updateLocale(locale, { weekStart })
     }
-    setDates(calculateMonth(month, year, weekStart))
-  }, [weekStart, month, year, locale])
+
+  }, [weekStart, locale])
 
   return (
     <Wrapper locale={locale}>
