@@ -56,7 +56,7 @@ const Home = () => {
 
       const isSpecificDates = typeof dates[0] === 'string' && dates[0].length === 8
       if (start === end) {
-        return setError(t('errors same_times'))
+        return setError('The start and end times can\u2019t be the same')
       }
 
       const times = dates.reduce((times, date) => {
