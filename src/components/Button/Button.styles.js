@@ -45,7 +45,6 @@ export const Pressable = styled('button')`
   }
 
   &:hover, &:focus {
-    transform: translate(0, 1px);
     &::before {
       transform: translate3d(0, 4px, -1em);
     }

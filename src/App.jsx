@@ -48,6 +48,7 @@ const App = () => {
             <ProviderInfo />
             <Routes>
               <Route path="/" element={<Pages.Home />} />
+              <Route path="/event" element={<Pages.Event />} />
             </Routes>
           </ChakraProvider>
         </Provider>

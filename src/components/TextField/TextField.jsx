@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { useEffect, forwardRef } from 'react'
 
 import {
   Wrapper,
@@ -12,13 +12,18 @@ const TextField = forwardRef(({
   subLabel,
   id,
   inline = false,
+  setValue,
   ...props
-}, ref) => (
-  <Wrapper $inline={inline}>
-    {label && <StyledLabel htmlFor={id} $inline={inline}>{label}</StyledLabel>}
-    {subLabel && <StyledSubLabel htmlFor={id}>{subLabel}</StyledSubLabel>}
-    <StyledInput id={id} ref={ref} {...props} />
-  </Wrapper>
-))
+}, ref) => {
+
+  return (
+    <Wrapper $inline={inline}>
+      {label && <StyledLabel htmlFor={id} $inline={inline}>{label}</StyledLabel>}
+      {subLabel && <StyledSubLabel htmlFor={id}>{subLabel}</StyledSubLabel>}
+      <StyledInput id={id} ref={ref} {...props} />
+    </Wrapper>
+  )
+
+})
 
 export default TextField

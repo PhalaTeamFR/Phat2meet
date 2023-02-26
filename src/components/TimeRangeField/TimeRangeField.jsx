@@ -35,6 +35,9 @@ const TimeRangeField = forwardRef(({
     }
   }, [rangeRef])
 
+  useEffect(() => setValue(props.name, JSON.stringify({ start, end })), [start, end, setValue, props.name])
+
+
   const handleMouseMove = e => {
     if (isStartMoving.current || isEndMoving.current) {
       let step = Math.round(((e.pageX - rangeRect.current.left) / rangeRect.current.width) * 24)
@@ -57,7 +60,7 @@ const TimeRangeField = forwardRef(({
       <input
         id={id}
         type="hidden"
-        value=""
+        value={JSON.stringify({ start, end })}
         ref={ref}
         {...props}
       />

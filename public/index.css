@@ -64,6 +64,7 @@ body {
   background: var(--background);
   color: var(--text);
   font-weight: var(--font-weight);
+  height: 100vh;
 }
 
 .light {
