@@ -10,11 +10,12 @@
   },
   "dependencies": {
     "@chakra-ui/react": "^2.5.0",
-    "@emotion/react": "^11.10.5",
+    "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.5",
     "@polkadot/api": "^9.13.6",
     "@polkadot/api-contract": "^7.14.3",
     "@polkadot/extension-dapp": "^0.42.9",
+    "cookies-next": "^2.1.1",
     "dayjs": "^1.11.7",
     "framer-motion": "^9.0.2",
     "goober": "^2.1.10",
@@ -23,6 +24,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.34.1",
+    "react-icons": "^4.7.1",
     "react-router-dom": "^6.3.0"
   },
   "devDependencies": {

@@ -8,7 +8,7 @@ import { Settings, ProviderInfo, Loading } from '/src/components'
 
 import { rpcEndpointAtom } from './components/Atoms/Foundation'
 
-const endpoint = 'wss://poc5.phala.network/ws';
+const endpoint = 'wss://phat-beta-node.phala.network/khala/ws';
 
 const theme = extendTheme({
   components: {

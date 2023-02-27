@@ -43,13 +43,12 @@ const RpcEndpointField = () => {
           <InputRightElement width="5.6rem" marginRight="1">
             <Button
               isLoading={status === 'connecting'}
-              isDisabled={status === 'connected' && input === endpoint}
               onClick={() => {
                 if (input.indexOf('wss://') !== 0) {
                   setValidateError('Invalid RPC Endpoint URL');
                   setEndpoint('');
                 } else {
-                  setEndpoint(input);
+                  setEndpoint(input)
                 }
               }}
             >

@@ -1,6 +1,6 @@
 import { atom } from 'jotai'
 
-export const rpcEndpointAtom = atom('wss://poc5.phala.network/ws')
+export const rpcEndpointAtom = atom('wss://phat-beta-node.phala.network/khala/ws')
 
 export const rpcEndpointErrorAtom = atom('')
 
