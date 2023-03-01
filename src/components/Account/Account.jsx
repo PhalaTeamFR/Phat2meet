@@ -8,7 +8,7 @@ import { AccountSelectModal } from '../Identity/AccountSelectModal'
 import ConnectWalletButton from '../Identity/ConnectWalletButton'
 
 
-import { rpcEndpointErrorAtom, rpcApiStatusAtom, createApiInstance, rpcEndpointAtom } from '../Atoms/FoundationBase'
+import { rpcEndpointErrorAtom, rpcApiStatusAtom, createApiInstance, rpcEndpointAtom, rpcApiInstanceAtom } from '../Atoms/FoundationBase'
 
 import {
   Button,
@@ -28,8 +28,10 @@ function Account() {
   const setError = useSetAtom(rpcEndpointErrorAtom)
   const status = useAtomValue(rpcApiStatusAtom);
 
-  console.log("status")
+  console.log("--------status-------")
   console.log(status)
+
+  const setApiInstance = useSetAtom(rpcApiInstanceAtom)
 
   useEffect(() => {
     setError('')
@@ -44,8 +46,6 @@ function Account() {
       const fn = async () => {
         const [ws, api] = createApiInstance(endpointUrl)
 
-        api.on('ready', () => console.log(new Date(), 'API ready'))
-
         api.on('connected', async () => {
           await api.isReady
           setStatus('connected')
@@ -59,6 +59,38 @@ function Account() {
           setEndpointUrl('')
         })
 
+        api.on('ready', () => console.log(new Date(), 'API ready'))
+
+        const onError = (err) => {
+          console.log(new Date(), 'api error', err)
+          setStatus('error')
+          setError(`RPC Error`)
+          setApiInstance(null)
+          setEndpointUrl('')
+          api.off('error', onError)
+          try {
+            api.disconnect()
+            ws.disconnect()
+          } catch (err1) {
+            console.log('hey yo', err1)
+          }
+        }
+        api.on('error', onError)
+
+        setTimeout(() => {
+          setStatus(prev => {
+            console.log(new Date(), 'timeout, let\'s check', prev)
+            if (prev !== 'connected') {
+              setApiInstance(null)
+              setEndpointUrl('')
+              console.log(new Date(), 'setStatus -> error')
+              setError('RPC Endpoint is unreachable')
+              return 'error'
+            }
+            return prev
+          })
+        }, 10000)
+
         await api.isReady
         setApiInstance(api)
       }
@@ -69,7 +101,7 @@ function Account() {
         console.log('error', err)
       }
     }
-  }, [])
+  }, [endpointUrl, setEndpointUrl, setStatus, setApiInstance, setError])
 
 
 
@@ -81,7 +113,6 @@ function Account() {
   return (
     <>
       <AccountSelectModal visibleAtom={accountSelectModalVisibleAtom} />
-
       <ConnectWalletButton visibleAtom={accountSelectModalVisibleAtom} children={profile.meta.name} />
     </>
   );

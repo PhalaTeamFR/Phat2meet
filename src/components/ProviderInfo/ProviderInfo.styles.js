@@ -13,4 +13,5 @@ export const StyledMain = styled('div')`
   color: inherit;
   background-color: #a52a2aed;
   padding: 5px;
+  width: 220px;
 `

@@ -4,7 +4,7 @@ import { atom, useAtom, useSetAtom } from 'jotai'
 
 import { ApiPromise, WsProvider } from '@polkadot/api'
 
-export const rpcEndpointAtom = atom('wss://phat-beta-node.phala.network/khala/ws')
+export const rpcEndpointAtom = atom('')
 
 export const rpcEndpointErrorAtom = atom('')
 
@@ -27,6 +27,10 @@ export const useConnectApi = () => {
   const setStatus = useSetAtom(rpcApiStatusAtomProvider)
   const setApiInstance = useSetAtom(rpcApiInstanceAtom)
   const setError = useSetAtom(rpcEndpointErrorAtom)
+
+  console.log("setApiInstance---------")
+  console.log(setApiInstance)
+
   useEffect(() => {
     setError('')
     if (!endpointUrl) {

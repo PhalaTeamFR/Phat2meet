@@ -4,7 +4,7 @@ import { ApiPromise, WsProvider } from '@polkadot/api'
 
 import { useAtom } from 'jotai'
 
-import { rpcEndpointAtom } from '../Atoms/Foundation'
+import { rpcEndpointAtom } from '../Atoms/FoundationBase'
 
 import {
   StyledMain,

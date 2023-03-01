@@ -11,7 +11,7 @@ const ConnectStatusDot = styled(GoPrimitiveDot)`
   ${({ connected }) => {
     switch (connected) {
       case 'connected':
-        return `color: green;`;
+        return `color: #C5FF47;`;
       case 'connecting':
         return `color: orange;`;
       case 'error':
@@ -25,17 +25,14 @@ const ConnectStatusDot = styled(GoPrimitiveDot)`
 const StyledButtonGroup = styled.div`
   border-image-slice: 1;
   border-width: 1px;
-  border-image-source: linear-gradient(90deg, #2B481E 0%, #233A18 100%);
+  border-image-source: linear-gradient(90deg, #C5FF47 0%, #C5FF47 100%);
   border-radius: 2px;
   background: #000;
-  margin-right: ;
+  margin-right: 10px;
 `;
 
 const EndpointSwitchButton = ({ onClick }) => {
   const status = useAtomValue(rpcApiStatusAtom);
-
-  console.log("------status ConnectStatusDot------")
-  console.log(status)
 
   return (
     <Button
