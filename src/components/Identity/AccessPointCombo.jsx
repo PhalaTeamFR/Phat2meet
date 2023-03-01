@@ -3,11 +3,23 @@ import { Suspense } from "react";
 import { Box } from "@chakra-ui/react";
 import { GoPrimitiveDot } from "react-icons/go";
 import styled from "@emotion/styled";
+import { useAtomValue } from 'jotai'
 
-
+import { rpcApiStatusAtom } from '../Atoms/FoundationBase'
 
 const ConnectStatusDot = styled(GoPrimitiveDot)`
-  ${({ connected }) => !!connected ? `color: green;` : `color: gray;`}
+  ${({ connected }) => {
+    switch (connected) {
+      case 'connected':
+        return `color: green;`;
+      case 'connecting':
+        return `color: orange;`;
+      case 'error':
+        return `color: red;`;
+      default:
+        return `color: gray;`;
+    }
+  }}
 `;
 
 const StyledButtonGroup = styled.div`
@@ -20,6 +32,11 @@ const StyledButtonGroup = styled.div`
 `;
 
 const EndpointSwitchButton = ({ onClick }) => {
+  const status = useAtomValue(rpcApiStatusAtom);
+
+  console.log("------status ConnectStatusDot------")
+  console.log(status)
+
   return (
     <Button
       variant="unstyled"
@@ -35,7 +52,7 @@ const EndpointSwitchButton = ({ onClick }) => {
         }
       >
         <Box w="4" h="4">
-          <ConnectStatusDot connected="1" />
+          <ConnectStatusDot connected={status} />
         </Box>
       </Suspense>
     </Button>
