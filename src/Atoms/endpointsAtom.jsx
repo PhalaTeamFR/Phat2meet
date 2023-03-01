@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import { atomWithStorage, useResetAtom } from 'jotai/utils';
 
-export const PARACHAIN_ENDPOINT = '';
+export const PARACHAIN_ENDPOINT = 'wss://phat-beta-node.phala.network/khala/ws';
 
 export const preferedEndpointAtom = atomWithStorage('last-selected-rpc', PARACHAIN_ENDPOINT);
 

@@ -17,7 +17,7 @@ import {
 
 import { rpcEndpointErrorAtom, rpcApiStatusAtom } from '../Atoms/FoundationBase'
 
-import { endpointAtom } from '../../Atoms/endpointsAtom'
+import { endpointAtom, PARACHAIN_ENDPOINT } from '../../Atoms/endpointsAtom'
 
 export default function EndpointAddressInput({ label }) {
   const [endpoint, setEndpoint] = useAtom(endpointAtom)
@@ -55,6 +55,17 @@ export default function EndpointAddressInput({ label }) {
           }}
         >
           {status === 'connected' && input === endpoint ? 'connected' : 'connect'}
+        </Button>
+        <Button
+          h="1.75rem"
+          size="sm"
+          onClick={() => {
+            const endpoint = PARACHAIN_ENDPOINT
+            setEndpoint(useResetAtom)
+            setCookie('preferred_endpoint', endpoint, { maxAge: 60 * 60 * 24 * 30 })
+          }}
+        >
+          Reset
         </Button>
       </InputGroup>
       <FormErrorMessage>
