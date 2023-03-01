@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { atom } from 'jotai'
 

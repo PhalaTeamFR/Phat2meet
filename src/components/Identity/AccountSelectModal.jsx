@@ -89,7 +89,7 @@ export const AccountSelectModal = ({ visibleAtom }) => {
                       {(selectedWallet && selectedWallet.address === account.address) ? (
                         <Button
                           onClick={() => {
-                            setSelectedWallet()
+                            setSelectedWallet(null)
                             setVisible(false)
                           }}
                         >
