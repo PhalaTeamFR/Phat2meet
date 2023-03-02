@@ -15,6 +15,7 @@
     "@polkadot/api": "^9.13.6",
     "@polkadot/api-contract": "^7.14.3",
     "@polkadot/extension-dapp": "^0.42.9",
+    "@tanstack/react-location": "^3.7.4",
     "cookies-next": "^2.1.1",
     "dayjs": "^1.11.7",
     "framer-motion": "^9.0.2",

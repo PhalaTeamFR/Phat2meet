@@ -1,7 +1,10 @@
 import { Suspense } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Outlet, Link } from "@tanstack/react-location"
 
-import * as Pages from '/src/pages'
+
+import HomePage from '/src/pages/Home/Home'
+import EventPage from '/src/pages/Event/Event'
+
 import { Settings, ProviderInfo, Loading } from '/src/components'
 import FoundationProvider from '../src/components/Foundation/Provider'
 
@@ -9,24 +12,34 @@ import { rpcEndpointAtom } from './components/Atoms/FoundationBase'
 
 const endpoint = 'wss://phat-beta-node.phala.network/khala/ws';
 
-const App = () => {
+const initialValues = [
+  [rpcEndpointAtom, endpoint]
+]
 
-  const initialValues = [
-    [rpcEndpointAtom, endpoint]
-  ]
+const App = () => {
 
   return (
     <>
-      <Suspense fallback={<Loading />}>
-        <FoundationProvider initialValues={initialValues}>
+
+      <FoundationProvider
+        initialValues={initialValues}
+        routes={[
+          { path: "/", element: <HomePage /> },
+          { path: "/event", element: <EventPage /> },
+        ]}
+      >
+        <div>
+          <Link to="/">Home</Link>
+          <br />
+          <Link to="/event">EVENT</Link>
+        </div>
+        <Suspense fallback={<div />}>
           <Settings />
           <ProviderInfo />
-          <Routes>
-            <Route path="/" element={<Pages.Home />} />
-            <Route path="/event" element={<Pages.Event />} />
-          </Routes>
-        </FoundationProvider>
-      </Suspense>
+        </Suspense>
+        <Outlet />
+      </FoundationProvider>
+
     </>
   )
 }

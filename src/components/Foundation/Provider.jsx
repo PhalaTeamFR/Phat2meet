@@ -2,6 +2,10 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 
 import { Provider as JotaiProvider } from 'jotai'
 import { useHydrateAtoms } from 'jotai/utils'
+import {
+  ReactLocation,
+  Router,
+} from "@tanstack/react-location"
 
 const theme = extendTheme({
   components: {
@@ -32,17 +36,26 @@ const HydrateAtoms = ({ initialValues, children }) => {
   return children
 }
 
+const location = new ReactLocation()
+
 export const FoundationProvider = ({
   children,
   // For Jotai Provider
   initialValues,
-  scope
+  scope,
+  // For React-Location
+  routes,
 }) => {
   return (
     <JotaiProvider scope={scope}>
       <HydrateAtoms initialValues={initialValues}>
         <ChakraProvider theme={theme}>
-          {children}
+          <Router
+            routes={routes}
+            location={location}
+          >
+            {children}
+          </Router>
         </ChakraProvider>
       </HydrateAtoms>
     </JotaiProvider>

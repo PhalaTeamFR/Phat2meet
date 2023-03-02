@@ -6,7 +6,7 @@ export const StyledMain = styled('div')`
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: 12px;
+  top: 50px;
   left: 12px;
   z-index: 200;
   padding: 0;
