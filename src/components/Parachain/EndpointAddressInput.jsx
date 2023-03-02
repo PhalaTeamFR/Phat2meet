@@ -8,26 +8,21 @@ import {
   FormErrorMessage,
 } from '@chakra-ui/react'
 import { useAtom, useAtomValue } from 'jotai'
-import { useResetAtom } from 'jotai/utils'
 import { setCookie } from 'cookies-next'
 
 import {
   Button,
 } from '/src/components'
 
-import { rpcEndpointErrorAtom, rpcApiStatusAtom } from '../Atoms/FoundationBase'
-
-import { endpointAtom, PARACHAIN_ENDPOINT } from '../../Atoms/endpointsAtom'
+import { rpcEndpointErrorAtom, rpcApiStatusAtom, rpcEndpointAtom } from '../Atoms/FoundationBase'
 
 export default function EndpointAddressInput({ label }) {
-  const [endpoint, setEndpoint] = useAtom(endpointAtom)
+
+  const [endpoint, setEndpoint] = useAtom(rpcEndpointAtom)
   const [input, setInput] = useState(endpoint);
   const [validateError, setValidateError] = useState('');
   const [error, setError] = useAtom(rpcEndpointErrorAtom);
   const status = useAtomValue(rpcApiStatusAtom);
-
-  console.log("------status------")
-  console.log(status)
 
   return (
     <FormControl isInvalid={error !== '' || validateError !== ''}>
@@ -45,27 +40,17 @@ export default function EndpointAddressInput({ label }) {
         />
         <Button
           isLoading={status === 'connecting'}
+          isDisabled={status === 'connected' && input === endpoint}
           onClick={() => {
             if (input.indexOf('wss://') !== 0) {
               setValidateError('Invalid RPC Endpoint URL');
-              setEndpoint('');
+
             } else {
               setEndpoint(input)
             }
           }}
         >
           {status === 'connected' && input === endpoint ? 'connected' : 'connect'}
-        </Button>
-        <Button
-          h="1.75rem"
-          size="sm"
-          onClick={() => {
-            const endpoint = PARACHAIN_ENDPOINT
-            setEndpoint(useResetAtom)
-            setCookie('preferred_endpoint', endpoint, { maxAge: 60 * 60 * 24 * 30 })
-          }}
-        >
-          Reset
         </Button>
       </InputGroup>
       <FormErrorMessage>

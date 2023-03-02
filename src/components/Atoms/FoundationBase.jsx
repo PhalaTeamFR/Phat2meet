@@ -1,7 +1,7 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { atom } from 'jotai'
 
-export const rpcEndpointAtom = atom('wss://phat-beta-node.phala.network/khala/ws')
+export const rpcEndpointAtom = atom('')
 
 export const rpcApiStatusAtom = atom('disconnected')
 export const rpcEndpointErrorAtom = atom('')

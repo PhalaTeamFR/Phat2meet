@@ -17,7 +17,7 @@ export const Pressable = styled('button')`
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1);
   border-radius: 3px;
   padding: ${props => props.$small ? '.4em 1.3em' : '.6em 1.5em'};
-  transform-style: preserve-3d;
+  transform-style: preserve-3df;
   margin-bottom: 5px;
 
   & svg, & img {
@@ -129,4 +129,17 @@ export const Pressable = styled('button')`
       display: none;
     }
   }
+
+  ${props => props.$isDisabled && `
+    cursor: not-allowed;
+    color: #c0c0c0;
+    background-color: #ffffff;
+    &::before {
+      content: none;
+    }
+    &:hover, &:active, &:focus {
+      transform: none;
+    }
+  `}
 `
+  

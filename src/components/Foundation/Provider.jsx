@@ -1,5 +1,7 @@
-import { Provider as JotaiProvider } from 'jotai'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+
+import { Provider as JotaiProvider } from 'jotai'
+import { useHydrateAtoms } from 'jotai/utils'
 
 const theme = extendTheme({
   components: {
@@ -24,6 +26,12 @@ const theme = extendTheme({
   },
 });
 
+const HydrateAtoms = ({ initialValues, children }) => {
+  // initialising on state with prop on render here
+  useHydrateAtoms(initialValues)
+  return children
+}
+
 export const FoundationProvider = ({
   children,
   // For Jotai Provider
@@ -31,10 +39,12 @@ export const FoundationProvider = ({
   scope
 }) => {
   return (
-    <JotaiProvider initialValues={initialValues} scope={scope}>
-      <ChakraProvider theme={theme}>
-        {children}
-      </ChakraProvider>
+    <JotaiProvider scope={scope}>
+      <HydrateAtoms initialValues={initialValues}>
+        <ChakraProvider theme={theme}>
+          {children}
+        </ChakraProvider>
+      </HydrateAtoms>
     </JotaiProvider>
   )
 }

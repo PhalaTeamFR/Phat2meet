@@ -11,10 +11,6 @@ import ConnectWalletButton from '../Identity/ConnectWalletButton'
 import { rpcEndpointErrorAtom, rpcApiStatusAtom, createApiInstance, rpcEndpointAtom, rpcApiInstanceAtom } from '../Atoms/FoundationBase'
 
 import {
-  Button,
-} from '/src/components'
-
-import {
   currentProfileAtom,
 } from '../Identity/Atoms'
 
@@ -24,11 +20,14 @@ function Account() {
   const [endpointUrl, setEndpointUrl] = useAtom(rpcEndpointAtom)
   const [api, setApi] = useState(null);
 
+  console.log("--------endpointUrl-------")
+  console.log(endpointUrl)
+
   const setStatus = useSetAtom(rpcApiStatusAtom)
   const setError = useSetAtom(rpcEndpointErrorAtom)
   const status = useAtomValue(rpcApiStatusAtom);
 
-  console.log("--------status-------")
+  console.log("--------status account-------")
   console.log(status)
 
   const setApiInstance = useSetAtom(rpcApiInstanceAtom)

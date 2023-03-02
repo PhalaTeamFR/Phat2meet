@@ -69,7 +69,7 @@ export const useConnectApi = () => {
             api.disconnect()
             ws.disconnect()
           } catch (err1) {
-            console.log('hey yo', err1)
+            console.log('hey err1', err1)
           }
         }
         api.on('error', onError)

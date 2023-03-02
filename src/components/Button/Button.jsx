@@ -11,6 +11,7 @@ const Button = ({
   small,
   size,
   isLoading,
+  isDisabled,
   ...props
 }) => (
   <Pressable
@@ -23,6 +24,7 @@ const Button = ({
     $small={small}
     $size={size}
     $isLoading={isLoading}
+    $isDisabled={isDisabled}
     {...props}
   >
     {icon}
