@@ -4,14 +4,13 @@ export const StyledMain = styled('div')`
   color: inherit;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   position: absolute;
-  top: 50px;
-  left: 12px;
+  bottom: 0px;
+  left: 0px;
   z-index: 200;
   padding: 0;
   color: inherit;
-  background-color: #a52a2aed;
+  background-color: #a52a2a3b;
   padding: 5px;
-  width: 220px;
 `

@@ -2681,6 +2681,11 @@ hoist-non-react-statics@^3.3.1:
   dependencies:
     react-is "^16.7.0"
 
+hue-map@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/hue-map/-/hue-map-0.1.1.tgz#d6b199f4121df56aaf1901222323545f0607a31d"
+  integrity sha512-aH3Maa39vHN+yTkWXdLcTN8M+ftGOX6NvGuMObl2puWxwoUZhm3gLlKA6SdpqJphF1RzQo0ntsm0Psg0uc7ouQ==
+
 ieee754@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.2.1.tgz#8eb7a10a63fff25d15a57b001586d177d1b0d352"
