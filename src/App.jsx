@@ -24,14 +24,14 @@ const App = () => {
       <FoundationProvider
         initialValues={initialValues}
         routes={[
-          { path: "/", element: <HomePage /> },
-          { path: "/event", element: <EventPage /> },
+          { path: "/home", element: <HomePage /> },
+          { path: "/", element: <EventPage /> },
         ]}
       >
         <div>
-          <Link to="/">Home</Link>
+          <Link to="/home">Home</Link>
           <br />
-          <Link to="/event">EVENT</Link>
+          <Link to="/">EVENT</Link>
         </div>
         <Suspense fallback={<div />}>
           <Settings />

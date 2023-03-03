@@ -1,51 +1,32 @@
-import { useState, useEffect } from 'react'
-import createPalette from 'hue-map'
+import { useTheme } from '@emotion/react';
 
 import {
   Wrapper,
   Label,
   Bar,
   Grade,
-} from './Legend.styles'
+} from './LegendStyles';
 
 const Legend = ({
   min,
   max,
-  total,
-  onSegmentFocus,
+  ...props
 }) => {
-  const highlight = []
-  const colormap = []
-  const setHighlight = []
-
-  const [palette, setPalette] = useState([])
-
-  useEffect(() => setPalette(createPalette({
-    map: colormap === 'crabfit' ? [[0, [247, 158, 0, 0]], [1, [247, 158, 0, 255]]] : colormap,
-    steps: max + 1 - min,
-  })), [min, max, colormap])
+  const theme = useTheme();
 
   return (
     <Wrapper>
-      <Label>{min}/{total} {'event:available'}</Label>
-      <Bar
-        onMouseOut={() => onSegmentFocus(null)}
-        onClick={() => setHighlight(!highlight)}
-        title={'event:group.legend_tooltip'}
-      >
-        {[...Array(max + 1 - min).keys()].map(i => i + min).map(i =>
-          <Grade
-            key={i}
-            $color={palette[i]}
-            $highlight={highlight && i === max && max > 0}
-            onMouseOver={() => onSegmentFocus(i)}
-          />
+      <Label>{min}/{max} available</Label>
+
+      <Bar>
+        {[...Array(max - min + 1).keys()].map(i =>
+          <Grade key={i} color={`#c5ff47${Math.round((i / (max - min)) * 255).toString(16)}`} />
         )}
       </Bar>
 
-      <Label>{max}/{total} {'event:available'}</Label>
+      <Label>{max}/{max} available</Label>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default Legend
+export default Legend;
