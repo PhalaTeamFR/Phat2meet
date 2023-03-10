@@ -44,7 +44,7 @@ const Home = () => {
     setIsLoading(true)
     setError(null)
 
-    console.log(data)
+    console.log('data onSubmit home', data)
 
     try {
       const { start, end } = JSON.parse(data.times)
@@ -128,7 +128,6 @@ const Home = () => {
             setValue={setValue}
             {...register('dates')}
           />
-
           <TimeRangeField
             label="What times might work?"
             subLabel="Click and drag to select a time range"
@@ -141,9 +140,7 @@ const Home = () => {
             <Button type="submit" isLoading={isLoading} >{"Create"}</Button>
           </Center>
         </CreateForm>
-
       </StyledMain>
-
     </>
   )
 }
