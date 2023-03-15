@@ -59,7 +59,7 @@ export const Time = styled('div')`
 	`}
 
 	background-color: var(--secondary);
-  background-color: ${props => `#c5ff47${Math.round((props.people.length / (props.totalPeople)) * 255).toString(16)}`};
+  background-color: ${props => `#c5ff47${Math.round((props.people.length / (props.totalpeople)) * 255).toString(16)}`};
 `;
 
 export const Spacer = styled('div')`

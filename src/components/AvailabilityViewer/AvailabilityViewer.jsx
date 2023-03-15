@@ -59,7 +59,7 @@ const AvailabilityViewer = ({
                       className="time"
                       people={peopleHere}
                       aria-label={peopleHere.join(', ')}
-                      totalPeople={people.length}
+                      totalpeople={people.length}
                       onMouseEnter={(e) => {
                         const cellBox = e.currentTarget.getBoundingClientRect();
                         setTooltip({

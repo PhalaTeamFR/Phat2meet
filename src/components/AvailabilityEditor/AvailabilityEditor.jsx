@@ -27,6 +27,7 @@ const AvailabilityEditor = ({
 	...props
 }) => {
 	const [selectingTimes, _setSelectingTimes] = useState([]);
+	const [selected, setSelected] = useState([]);
 	const staticSelectingTimes = useRef([]);
 	const setSelectingTimes = newTimes => {
 		staticSelectingTimes.current = newTimes;
@@ -66,7 +67,7 @@ const AvailabilityEditor = ({
 										time={time}
 										className="time"
 										selected={value.includes(`${time}-${date}`)}
-										selecting={selectingTimes.includes(`${time}-${date}`)}
+										selecting={selectingTimes.includes(`${time}-${date}`) ? "true" : undefined}
 										mode={mode}
 										onPointerDown={(e) => {
 											e.preventDefault();

@@ -10,7 +10,7 @@ async function getAccounts() {
 
 export const availableAccountsAtom = atom(getAccounts());
 
-export const currentAccountAtom = atom({ address: "", meta: { name: "" } });
+export const currentAccountAtom = atom({ address: "", meta: { name: "" }, connected: false });
 
 export const currentProfileAtom = atom(get => {
   const currentAccount = get(currentAccountAtom)

@@ -11,11 +11,11 @@ export const Time = styled('div')`
 	${props => props.time.slice(-2) === '30' && `
 		border-top: 1px dotted var(--secondary);
 	`}
-
+	
 	${props => (props.selected || (props.mode === 'add' && props.selecting)) && `
 		background-color: var(--secondary);
 	`};
 	${props => props.mode === 'remove' && props.selecting && `
-		background-color: initial;
+		background-color: var(--secondary);
 	`};
 `;

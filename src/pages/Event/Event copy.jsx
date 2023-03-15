@@ -2,7 +2,6 @@ import {
   AvailabilityViewer,
 } from '/src/components'
 
-
 import {
   StyledMain,
   TitleSmall,

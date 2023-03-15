@@ -20,9 +20,6 @@ function Account() {
   const [endpointUrl, setEndpointUrl] = useAtom(rpcEndpointAtom)
   const [api, setApi] = useState(null);
 
-  console.log("--------endpointUrl-------")
-  console.log(endpointUrl)
-
   const setStatus = useSetAtom(rpcApiStatusAtom)
   const setError = useSetAtom(rpcEndpointErrorAtom)
   const status = useAtomValue(rpcApiStatusAtom);
