@@ -12,7 +12,8 @@ const theme = extendTheme({
     Modal: {
       baseStyle: () => ({
         dialog: {
-          bg: "#121212"
+          bg: "#121212",
+          color: "000"
         }
       })
     }

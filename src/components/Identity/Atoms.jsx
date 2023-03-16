@@ -1,14 +1,35 @@
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { atom } from 'jotai'
 
-async function getAccounts() {
-  await web3Enable('polkadot-client-app');
-  const injectedAccountWithMeta = await web3Accounts();
+export const extensionEnabledAtom = atom(false)
 
-  return injectedAccountWithMeta;
+extensionEnabledAtom.onMount = (set) => {
+  (async () => {
+    try {
+      const injected = await web3Enable('contracts-ui')
+      console.log('injected', injected)
+      if (injected.length > 0) {
+        set(true)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  })()
 }
 
-export const availableAccountsAtom = atom(getAccounts());
+export const accountsAtom = atom(async (get) => {
+  const enabled = get(extensionEnabledAtom)
+  if (enabled) {
+    try {
+      const allAccounts = await web3Accounts();
+
+      return allAccounts
+    } catch (err) {
+      console.log('[accountsAtom] load keyring failed with: ', err)
+    }
+  }
+  return []
+})
 
 export const currentAccountAtom = atom({ address: "", meta: { name: "" }, connected: false });
 

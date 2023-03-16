@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import { ApiPromise, WsProvider } from '@polkadot/api';
-import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 
 import { atom, useAtom, useSetAtom, useAtomValue } from 'jotai'
 
