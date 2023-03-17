@@ -23,7 +23,7 @@ import {
 } from '/src/components'
 
 import {
-  currentAccountAtom, extensionEnabledAtom
+  currentAccountAtom, extensionEnabledAtom, accountsAtom
 } from './Atoms'
 
 import trimAddress from './TrimAddress'
@@ -35,23 +35,11 @@ function AccountSelectFieldBase() {
 
   const enabled = useAtomValue(extensionEnabledAtom)
   const [accounts, setAccounts] = useState([]);
+  const account = useAtomValue(accountsAtom)
+
 
   useEffect(() => {
-    const fetchAccounts = async () => {
-      if (enabled) {
-        try {
-          const allAccounts = await web3Accounts();
-          setAccounts(allAccounts);
-        } catch (err) {
-          console.log('[AccountSelectFieldBase] load keyring failed with: ', err);
-        }
-      }
-    };
-    fetchAccounts();
-  }, [enabled]);
-
-  useEffect(() => {
-    if (enabled) {
+    if (account) {
       (async () => {
         const updatedAccounts = await web3Accounts();
         setAccounts(updatedAccounts);
@@ -150,7 +138,7 @@ export const AccountSelectModal = ({ visibleAtom }) => {
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Suspense fallback={<Button><Spinner /></Button>}>
+          <Suspense fallback={<div />}>
             <ExtensionRequiredHelpText />
             <AccountSelectFieldBase />
           </Suspense>
