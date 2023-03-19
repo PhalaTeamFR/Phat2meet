@@ -9,7 +9,7 @@ import ConnectWalletButton from '../Identity/ConnectWalletButton'
 import { rpcEndpointErrorAtom, rpcApiStatusAtom, createApiInstance, rpcEndpointAtom, rpcApiInstanceAtom } from '../Atoms/FoundationBase'
 
 import {
-  currentProfileAtom,
+  currentProfileAtom, balanceAtom
 } from '../Identity/Atoms'
 
 function Account() {
@@ -98,16 +98,25 @@ function Account() {
   }, [endpointUrl, setEndpointUrl, setStatus, setApiInstance, setError])
 
 
-
   const profile = useAtomValue(currentProfileAtom)
 
   console.log("profile currentProfileAtom");
   console.log(profile);
 
+
+  const balance = useAtomValue(balanceAtom)
+
+  let placeholder = 'Please Select Account First'
+  if (profile.meta.name) {
+    placeholder = `${profile.meta.name} (${balance} UNIT)`
+  } else if (profile.length === 0) {
+    placeholder = 'Please Add Account First'
+  }
+
   return (
     <>
       <AccountSelectModal visibleAtom={accountSelectModalVisibleAtom} />
-      <ConnectWalletButton visibleAtom={accountSelectModalVisibleAtom} children={profile.meta.name} />
+      <ConnectWalletButton visibleAtom={accountSelectModalVisibleAtom} children={placeholder} />
     </>
   );
 }

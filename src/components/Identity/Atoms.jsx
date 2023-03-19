@@ -1,5 +1,10 @@
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
+
 import { atom } from 'jotai'
+
+import {
+  rpcApiInstanceAtom,
+} from '../Atoms/FoundationBase'
 
 export const extensionEnabledAtom = atom(false)
 
@@ -48,3 +53,21 @@ export const currentProfileAtom = atom(get => {
     connected: true,
   }
 })
+
+export const balanceAtom = atom(async (get) => {
+  const api = get(rpcApiInstanceAtom)
+  const selected = get(currentAccountAtom)
+  if (!api || !selected) {
+    return 0
+  }
+  //console.log('api.query.system', api.query.system)
+  const account = await api.query.system.account(selected.address)
+  //console.log('account.data', account.data)
+  const value = parseInt((BigInt(account.data.free.toString()) / BigInt(100000000)).toString(), 10) / 10000
+  return value
+})
+
+
+console.log('balanceAtom', balanceAtom)
+
+

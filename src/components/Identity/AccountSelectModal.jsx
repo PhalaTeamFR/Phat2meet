@@ -80,7 +80,6 @@ function AccountSelectFieldBase() {
                   <Button
                     onClick={() => {
                       setSelectedWallet(null)
-                      setVisible(false)
                     }}
                   >
                     Unselect
@@ -89,7 +88,6 @@ function AccountSelectFieldBase() {
                   <Button
                     onClick={() => {
                       setSelectedWallet(account)
-                      setVisible(false)
                     }}
                   >
                     Select
