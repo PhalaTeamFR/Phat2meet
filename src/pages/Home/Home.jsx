@@ -2,7 +2,17 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 
-import api from '/src/services'
+import { PinkContractPromise, OnChainRegistry } from '@phala/sdk'
+import { useAtomValue } from 'jotai'
+import metadata from '../../contrat/metadata.json';
+import {
+  rpcApiInstanceAtom
+} from '../../components/Atoms/FoundationBase'
+
+import {
+  contractIdAtom,
+} from '../../components/Identity/Atoms'
+
 
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
@@ -103,6 +113,47 @@ const Home = () => {
       setIsLoading(false)
     }
   }
+
+  // contract
+
+  const [contract, setContract] = useState();
+
+  const api = useAtomValue(rpcApiInstanceAtom)
+
+  useEffect(() => {
+    if (api) {
+      loadContract()
+    }
+  }, [api])
+
+  const loadContract = async () => {
+
+    try {
+
+      const contractId = contractIdAtom
+      console.log('contractId', contractId)
+
+      const phatRegistry = await OnChainRegistry.create(api)
+
+      const abi = JSON.parse(JSON.stringify(metadata))
+      const contractKey = await phatRegistry.getContractKey(contractId)
+
+      console.log("contractKey", contractKey)
+      // --> 0x1a83b5232d06181c5056d150623e24865b32dc91a6e1baa742087a005ff8fb1b
+
+      const contract = new PinkContractPromise(api, phatRegistry, abi, contractId, contractKey)
+
+      console.log("contract:", contract.abi.messages.map((e) => { return e.method }))
+      // contract: Array [ "get", "setValue" ]
+
+      setContract(contract)
+      console.log("Contract loaded successfully");
+    } catch (err) {
+      console.log("Error in contract loading", err);
+      throw err;
+    }
+
+  };
 
   return (
     <>
