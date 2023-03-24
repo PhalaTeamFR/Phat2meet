@@ -108,7 +108,7 @@ function Account() {
 
   let placeholder = 'Please Select Account First'
   if (profile.meta.name) {
-    placeholder = `${profile.meta.name} (${balance} UNIT)`
+    placeholder = `${profile.meta.name} (${balance} PHAT)`
   } else if (profile.length === 0) {
     placeholder = 'Please Add Account First'
   }
