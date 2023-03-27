@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-
+import { Keyring } from '@polkadot/api'
 import { PinkContractPromise, OnChainRegistry } from '@phala/sdk'
 import { useAtomValue } from 'jotai'
 import metadata from '../../contrat/metadata.json';
+
 import {
   rpcApiInstanceAtom
 } from '../../components/Atoms/FoundationBase'
 
 import {
-  contractIdAtom,
+  contractIdAtom, currentAccountAtom
 } from '../../components/Identity/Atoms'
-
 
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
@@ -115,16 +115,39 @@ const Home = () => {
   }
 
   // contract
-
   const [contract, setContract] = useState();
+  const [phatMessage, setPhatMessage] = useState();
+  const [queryPair, setQueryPair] = useState();
+  const [account, setStateAccount] = useState(undefined);
 
+  const profile = useAtomValue(currentAccountAtom)
   const api = useAtomValue(rpcApiInstanceAtom)
+
+  let lsAccount = undefined;
+
+  console.log("profile loadContext");
+  console.log(profile);
 
   useEffect(() => {
     if (api) {
       loadContract()
+      loadContext()
     }
   }, [api])
+
+  useEffect(() => {
+    if (contract) {
+      doQuery();
+    }
+  }, [contract]);
+
+  const loadContext = () => {
+    setQueryPair(new Keyring({ type: 'sr25519' }).addFromUri("//Alice"))
+    lsAccount = profile
+    if (typeof lsAccount !== "undefined") {
+      setStateAccount(lsAccount)
+    }
+  }
 
   const loadContract = async () => {
 
@@ -155,12 +178,25 @@ const Home = () => {
 
   };
 
+  // query vith beta sdk
+  const doQuery = async () => {
+    // for a query (readonly) we use the "queryPair" account, init with "//Alice"
+    const message = await contract.query.get(queryPair);
+    setPhatMessage(message.output.toHuman());
+    console.log('message:', message.output.toHuman())
+  }
+
   return (
     <>
       <StyledMain>
         <TitleSmall>Create a</TitleSmall>
         <TitleLarge>Phat2meet</TitleLarge>
       </StyledMain>
+      <StyledMain>
+        message :
+        <span>{phatMessage}</span>
+      </StyledMain>
+
       <StyledMain>
         <Error open={!!error} onClose={() => setError(null)}>{error}</Error>
         <CreateForm onSubmit={handleSubmit(onSubmit)} id="create">

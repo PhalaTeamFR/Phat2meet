@@ -15,7 +15,7 @@ export const extensionEnabledAtom = atom(false)
 extensionEnabledAtom.onMount = (set) => {
   (async () => {
     try {
-      const injected = await web3Enable('contracts-ui')
+      const injected = await web3Enable('phat2meet')
       console.log('injected', injected)
       if (injected.length > 0) {
         set(true)
