@@ -1,10 +1,6 @@
 import { web3Enable, web3Accounts } from '@polkadot/extension-dapp'
 
-import { PinkContractPromise, OnChainRegistry } from '@phala/sdk'
-
 import { atom } from 'jotai'
-
-import metadata from '../../contrat/metadata.json';
 
 import {
   rpcApiInstanceAtom,
@@ -71,17 +67,3 @@ export const balanceAtom = atom(async (get) => {
 
 // contract ID on phat-cb (contract address on polkadot.js.org/apps)
 export const contractIdAtom = "0xcab37b387b2e15c6758dcade3f340d16aca3e0c0f18c94e485c103442a8bbcfa"
-
-export const contractAtom = atom(async (get) => {
-  const api = get(rpcApiInstanceAtom)
-
-  const phatRegistry = await OnChainRegistry.create(api)
-  const abi = JSON.parse(JSON.stringify(metadata))
-  const contractKey = await phatRegistry.getContractKey(contractIdAtom)
-
-  const contract = new PinkContractPromise(api, phatRegistry, abi, contractIdAtom, contractKey)
-
-
-  return contract
-})
-
