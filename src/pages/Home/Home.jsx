@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
+import toast, { Toaster } from "react-hot-toast";
 
 import { Keyring } from '@polkadot/api'
 import { web3Enable } from '@polkadot/extension-dapp'
@@ -194,7 +195,6 @@ const Home = () => {
     return signer;
   };
 
-
   // query vith beta sdk
   const doQuery = async () => {
     // for a query (readonly) we use the "queryPair" account, init with "//Alice"
@@ -221,15 +221,24 @@ const Home = () => {
     const tx = await contract.tx
       .setValue(options, message)
       .signAndSend(profile.address, { signer }, ({ events = [], status, txHash }) => {
+        console.log('status', status)
         if (status.isInBlock) {
-          console.log("In Block")
+          toast.success("In Block", {
+            duration: 6000,
+          })
         }
         if (status.isCompleted) {
-          console.log("Completed")
+          toast.success("Completed")
         }
         if (status.isFinalized) {
-          console.log(`Transaction included at blockHash ${status.asFinalized}`);
-          console.log(`Transaction hash ${txHash.toHex()}`);
+
+          toast.success(`Transaction included at blockHash ${status.asFinalized}`, {
+            duration: 6000,
+          })
+
+          toast.success(`Transaction hash ${txHash.toHex()}`, {
+            duration: 6000,
+          })
 
           // Loop through Vec<EventRecord> to display all events
           events.forEach(({ phase, event: { data, method, section } }) => {
@@ -237,27 +246,39 @@ const Home = () => {
           });
         }
       })
-
   };
 
   const messageInput = useRef();
 
   return (
     <>
+      <div>
+        <Toaster />
+      </div>
       <StyledMain>
         <TitleSmall>Create a</TitleSmall>
         <TitleLarge>Phat2meet</TitleLarge>
       </StyledMain>
+      {(!profile?.address) && (
+        <Error>Please log in with your wallet first</Error>
+      )}
       <StyledMain>
-        message :
+        <div>message to phatContract:</div>
         <span>{phatMessage}</span>
       </StyledMain>
-      <StyledMain>
-        <input type="text" ref={messageInput}></input>
-        <button disabled={!(contract && profile?.address)} onClick={() => doTx(messageInput.current.value)}>
-          do Tx
-        </button>
-      </StyledMain>
+      {(contract && profile?.address) && (
+        <StyledMain>
+          <TextField
+            label="Signer message test"
+            subLabel=""
+            type="text"
+            id="name"
+            ref={messageInput}
+          />
+          <Button disabled={!(contract && profile?.address)} onClick={() => doTx(messageInput.current.value)}>{"Send your message"}</Button>
+        </StyledMain>
+      )}
+
       <StyledMain>
         <Error open={!!error} onClose={() => setError(null)}>{error}</Error>
         <CreateForm onSubmit={handleSubmit(onSubmit)} id="create">
