@@ -22,8 +22,9 @@ function Account() {
   const setError = useSetAtom(rpcEndpointErrorAtom)
   const status = useAtomValue(rpcApiStatusAtom);
 
-  console.log("--------status account-------")
+  console.groupCollapsed("--------status account-------")
   console.log(status)
+  console.groupEnd()
 
   const setApiInstance = useSetAtom(rpcApiInstanceAtom)
 
@@ -56,7 +57,7 @@ function Account() {
         api.on('ready', () => console.log(new Date(), 'API ready'))
 
         const onError = (err) => {
-          console.log(new Date(), 'api error', err)
+          console.error(new Date(), 'api error', err)
           setStatus('error')
           setError(`RPC Error`)
           setApiInstance(null)
@@ -107,7 +108,7 @@ function Account() {
   const balance = useAtomValue(balanceAtom)
 
   let placeholder = 'Please Select Account First'
-  if (profile.meta.name) {
+  if (profile.connected) {
     placeholder = `${profile.meta.name} (${balance} PHAT)`
   } else if (profile.length === 0) {
     placeholder = 'Please Add Account First'

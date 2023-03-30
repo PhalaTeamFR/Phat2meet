@@ -25,8 +25,8 @@
     "hue-map": "^0.1.1",
     "jotai": "^2.0.3",
     "lucide-react": "^0.112.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "latest",
+    "react-dom": "latest",
     "react-hook-form": "^7.34.1",
     "react-icons": "^4.7.1",
     "react-router-dom": "^6.3.0"

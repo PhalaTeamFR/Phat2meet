@@ -34,21 +34,19 @@ export const accountsAtom = atom(async (get) => {
 
       return allAccounts
     } catch (err) {
-      console.log('[accountsAtom] load keyring failed with: ', err)
+      console.error('[accountsAtom] load keyring failed with: ', err)
     }
   }
   return []
 })
 
-export const currentAccountAtom = atom({ address: "", meta: { name: "" }, connected: false });
+export const currentAccountAtom = atom(undefined);
 
 export const currentProfileAtom = atom(get => {
   const currentAccount = get(currentAccountAtom)
 
   if (!currentAccount) {
     return {
-      address: "", meta: { name: "" },
-      displayName: 'Guest',
       connected: false,
     }
   }
@@ -86,3 +84,4 @@ export const contractAtom = atom(async (get) => {
 
   return contract
 })
+

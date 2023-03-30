@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Keyring } from '@polkadot/api'
+import { web3Enable } from '@polkadot/extension-dapp'
 import { PinkContractPromise, OnChainRegistry } from '@phala/sdk'
 import { useAtomValue } from 'jotai'
 import metadata from '../../contrat/metadata.json';
@@ -125,8 +126,9 @@ const Home = () => {
 
   let lsAccount = undefined;
 
-  console.log("profile loadContext");
-  console.log(profile);
+  console.groupCollapsed("--------profile loadContext-------")
+  console.log(profile)
+  console.groupEnd()
 
   useEffect(() => {
     if (api) {
@@ -172,11 +174,26 @@ const Home = () => {
       setContract(contract)
       console.log("Contract loaded successfully");
     } catch (err) {
-      console.log("Error in contract loading", err);
+      console.error("Error in contract loading", err);
       throw err;
     }
 
   };
+
+  const getInjector = async () => {
+    const injector = await web3Enable('phat2meet')
+    console.log("injector web3Enable", injector)
+    return injector
+  }
+
+  const getSigner = async (profile) => {
+    const injector = await getInjector(profile)
+    console.log("getInjector", injector)
+    const signer = injector[0].signer;
+    console.log("injector.signer", injector[0].signer)
+    return signer;
+  };
+
 
   // query vith beta sdk
   const doQuery = async () => {
@@ -185,6 +202,45 @@ const Home = () => {
     setPhatMessage(message.output.toHuman());
     console.log('message:', message.output.toHuman())
   }
+
+  // function to send a tx, in this example we call setValue
+  const doTx = async (message) => {
+    console.log('doTxmessage', message)
+    if (!contract) return;
+
+    const signer = await getSigner(profile);
+    console.log("getSigner", signer)
+    // costs estimation
+    const { gasRequired, storageDeposit } = await contract.query['setValue']({ account: profile, signer }, message)
+    console.log('gasRequired & storageDeposit: ', gasRequired, storageDeposit)
+    // transaction / extrinct
+    const options = {
+      gasLimit: gasRequired.refTime,
+      storageDepositLimit: storageDeposit.isCharge ? storageDeposit.asCharge : null,
+    }
+    const tx = await contract.tx
+      .setValue(options, message)
+      .signAndSend(profile.address, { signer }, ({ events = [], status, txHash }) => {
+        if (status.isInBlock) {
+          console.log("In Block")
+        }
+        if (status.isCompleted) {
+          console.log("Completed")
+        }
+        if (status.isFinalized) {
+          console.log(`Transaction included at blockHash ${status.asFinalized}`);
+          console.log(`Transaction hash ${txHash.toHex()}`);
+
+          // Loop through Vec<EventRecord> to display all events
+          events.forEach(({ phase, event: { data, method, section } }) => {
+            console.log(`\t' ${phase}: ${section}.${method}:: ${data}`);
+          });
+        }
+      })
+
+  };
+
+  const messageInput = useRef();
 
   return (
     <>
@@ -196,7 +252,12 @@ const Home = () => {
         message :
         <span>{phatMessage}</span>
       </StyledMain>
-
+      <StyledMain>
+        <input type="text" ref={messageInput}></input>
+        <button disabled={!(contract && profile?.address)} onClick={() => doTx(messageInput.current.value)}>
+          do Tx
+        </button>
+      </StyledMain>
       <StyledMain>
         <Error open={!!error} onClose={() => setError(null)}>{error}</Error>
         <CreateForm onSubmit={handleSubmit(onSubmit)} id="create">

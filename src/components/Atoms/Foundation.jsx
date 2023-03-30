@@ -59,7 +59,7 @@ export const useConnectApi = () => {
         api.on('ready', () => console.log(new Date(), 'API ready'))
 
         const onError = (err) => {
-          console.log(new Date(), 'api error', err)
+          console.error(new Date(), 'api error', err)
           setStatus('error')
           setError(`RPC Error`)
           setApiInstance(null)
@@ -69,7 +69,7 @@ export const useConnectApi = () => {
             api.disconnect()
             ws.disconnect()
           } catch (err1) {
-            console.log('hey err1', err1)
+            console.error('hey err1', err1)
           }
         }
         api.on('error', onError)
@@ -95,7 +95,7 @@ export const useConnectApi = () => {
       try {
         fn()
       } catch (err) {
-        console.log('error', err)
+        console.error('error', err)
       }
     }
   }, [endpointUrl, setEndpointUrl, setStatus, setApiInstance, setError])
