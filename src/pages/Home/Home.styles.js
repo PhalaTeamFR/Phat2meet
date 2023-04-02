@@ -10,6 +10,20 @@ export const StyledMain = styled('div')`
   }
 `
 
+export const StyledMainTest = styled('div')`
+  width: 800px;
+  margin: 20px auto;
+  max-width: calc(100% - 60px);
+  border: 1px solid #a52a2a3b;
+  border-radius: 3px;
+  padding: 10px 14px;
+  background-color: #a52a2a3b;
+
+  * {
+    text-align: left;
+  }
+`
+
 export const CreateForm = styled('form')`
   margin: 0 0 60px;
 `

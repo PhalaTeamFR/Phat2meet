@@ -25,6 +25,7 @@ import {
 
 import {
   StyledMain,
+  StyledMainTest,
   TitleSmall,
   TitleLarge,
   CreateForm
@@ -44,6 +45,7 @@ const Home = () => {
 
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
+
 
   const onSubmit = async data => {
     setIsLoading(true)
@@ -109,11 +111,12 @@ const Home = () => {
     }
   }
 
-  const { contract, phatMessage, doTx } = useContract();
+  const { contract, phatMessage, doTx, txStatus, isLoadingStatus, doQuery } = useContract();
 
   const profile = useAtomValue(currentAccountAtom)
 
   const messageInput = useRef();
+
 
   return (
     <>
@@ -125,25 +128,35 @@ const Home = () => {
         <TitleLarge>Phat2meet</TitleLarge>
       </StyledMain>
 
-      <StyledMain>
+      <StyledMainTest>
+        <TitleSmall>Test Phase phatContract</TitleSmall>
         {(!profile?.address) && (
           <Error>Please log in with your wallet first</Error>
         )}
-        <div>message to phatContract:</div>
-        <span>{phatMessage}</span>
-      </StyledMain>
-      {(contract && profile?.address) && (
-        <StyledMain>
-          <TextField
-            label="Signer message test"
-            subLabel=""
-            type="text"
-            id="name"
-            ref={messageInput}
-          />
-          <Button disabled={!(contract && profile?.address)} onClick={() => doTx(messageInput.current.value)}>{"Send your message"}</Button>
-        </StyledMain>
-      )}
+        <div>message to phatContract:
+          <span>{phatMessage}</span></div><br />
+        <Button disabled={!(contract)} onClick={doQuery}>
+          do Query
+        </Button>
+
+
+        {(contract && profile?.address) && (
+          <>
+
+
+            <TextField
+              label="Signer message test"
+              subLabel=""
+              type="text"
+              id="name"
+              ref={messageInput}
+            />
+            <Button disabled={!(contract && profile?.address)} isLoading={isLoadingStatus} onClick={() => doTx(messageInput.current.value)}>{"Send your message"}</Button>
+            <div>Status: {txStatus}</div>
+
+          </>
+        )}
+      </StyledMainTest>
 
       <StyledMain>
         <Error open={!!error} onClose={() => setError(null)}>{error}</Error>

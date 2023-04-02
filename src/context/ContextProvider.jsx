@@ -6,7 +6,7 @@ import { PinkContractPromise, OnChainRegistry } from '@phala/sdk';
 import metadata from '../contrat/metadata.json';
 import { rpcApiInstanceAtom } from '../components/Atoms/FoundationBase';
 
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 import {
   contractIdAtom, currentAccountAtom
@@ -20,6 +20,9 @@ export const useContract = () => {
 
   const profile = useAtomValue(currentAccountAtom)
   const api = useAtomValue(rpcApiInstanceAtom)
+
+  const [txStatus, setTxStatus] = useState("");
+  const [isLoadingStatus, setIsLoadingStatus] = useState(false);
 
   let lsAccount = undefined;
 
@@ -35,6 +38,14 @@ export const useContract = () => {
       doQuery();
     }
   }, [contract]);
+
+  useEffect(() => {
+    if (!isLoadingStatus) {
+      doQuery();
+    }
+  }, [isLoadingStatus]);
+
+  console.log('isLoadingStatus', isLoadingStatus)
 
   const loadContext = () => {
     setQueryPair(new Keyring({ type: 'sr25519' }).addFromUri("//Alice"))
@@ -97,9 +108,11 @@ export const useContract = () => {
 
   // function to send a tx, in this example we call setValue
   const doTx = async (message) => {
+
     console.log('doTxmessage', message)
     if (!contract) return;
 
+    setIsLoadingStatus(true)
     const signer = await getSigner(profile);
     console.log("getSigner", signer)
     // costs estimation
@@ -115,15 +128,18 @@ export const useContract = () => {
       .signAndSend(profile.address, { signer }, ({ events = [], status, txHash }) => {
         console.log('status', status)
         if (status.isInBlock) {
+          setTxStatus(`In Block: Transaction included at blockHash ${status.asInBlock}`);
           toast.success("In Block", {
             duration: 6000,
           })
         }
         if (status.isCompleted) {
+          setTxStatus("Completed");
           toast.success("Completed")
         }
         if (status.isFinalized) {
-
+          setTxStatus(true);
+          setIsLoadingStatus(false);
           toast.success(`Transaction included at blockHash ${status.asFinalized}`, {
             duration: 6000,
           })
@@ -144,5 +160,8 @@ export const useContract = () => {
     contract,
     phatMessage,
     doTx,
+    txStatus,
+    isLoadingStatus,
+    doQuery
   };
 };
