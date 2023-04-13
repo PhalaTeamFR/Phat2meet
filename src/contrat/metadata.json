@@ -1,181 +1,1553 @@
 {
   "source": {
-    "hash": "0x021907a3b977388df0cf9d098438c42d0369cc0791ddf6b4043d69de11d57dd8",
-    "language": "ink! 3.4.0",
-    "compiler": "rustc 1.69.0-nightly"
+    "hash": "0x817ee8d1cb1ede55e79aab9a00055951b4579c454adaa3289bc3464d515c172d",
+    "language": "ink! 4.1.0",
+    "compiler": "rustc 1.68.2",
+    "build_info": {
+      "build_mode": "Debug",
+      "cargo_contract_version": "2.1.0",
+      "rust_toolchain": "stable-x86_64-unknown-linux-gnu",
+      "wasm_opt_settings": {
+        "keep_debug_symbols": false,
+        "optimization_passes": "Z"
+      }
+    }
   },
   "contract": {
-    "name": "phat2MEET",
+    "name": "phat2meet",
     "version": "0.1.0",
     "authors": [
-      "PhalaTeamFR-https://linktr.ee/phalafr"
+      "PhalaTeam-FR"
     ]
   },
-  "V3": {
-    "spec": {
-      "constructors": [
-        {
-          "args": [
-            {
-              "label": "init_value",
-              "type": {
-                "displayName": [
-                  "String"
-                ],
-                "type": 0
-              }
-            }
+  "spec": {
+    "constructors": [
+      {
+        "args": [],
+        "docs": [
+          "Constructor that initializes the"
+        ],
+        "label": "new",
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink_primitives",
+            "ConstructorResult"
           ],
-          "docs": [
-            "Constructor that initializes the `bool` value to the given `init_value`."
-          ],
-          "label": "new",
-          "payable": false,
-          "selector": "0x9bae9d5e"
+          "type": 6
         },
-        {
-          "args": [],
-          "docs": [
-            "Constructor that initializes the `bool` value to `false`.",
-            "",
-            "Constructors can delegate to other constructors."
+        "selector": "0x9bae9d5e"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "label": "default",
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink_primitives",
+            "ConstructorResult"
           ],
-          "label": "default",
-          "payable": false,
-          "selector": "0xed4b9d1b"
-        }
-      ],
-      "docs": [],
-      "events": [],
-      "messages": [
-        {
-          "args": [],
-          "docs": [
-            " Simply returns the current value of our `bool`."
-          ],
-          "label": "get",
-          "mutates": false,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "String"
-            ],
-            "type": 0
-          },
-          "selector": "0x2f865bd9"
+          "type": 6
         },
-        {
-          "args": [
-            {
-              "label": "value",
-              "type": {
-                "displayName": [
-                  "String"
-                ],
-                "type": 0
-              }
-            }
-          ],
-          "docs": [],
-          "label": "set_value",
-          "mutates": true,
-          "payable": false,
-          "returnType": {
-            "displayName": [
-              "Result"
-            ],
-            "type": 1
-          },
-          "selector": "0xc6298215"
-        }
-      ]
-    },
-    "storage": {
-      "struct": {
-        "fields": [
+        "selector": "0xed4b9d1b"
+      }
+    ],
+    "docs": [],
+    "events": [
+      {
+        "args": [
           {
-            "layout": {
-              "cell": {
-                "key": "0x0000000000000000000000000000000000000000000000000000000000000000",
-                "ty": 0
-              }
-            },
-            "name": "value"
+            "docs": [],
+            "indexed": false,
+            "label": "name",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 4
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "meeting_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "meeting_owner",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "meeting_start_date",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "meeting_result_date",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "date_creation",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 5
+            }
           }
+        ],
+        "docs": [],
+        "label": "MeetingCreated"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "meeting_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "meeting_quorum",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "consolidation_date",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "docs": [],
+        "label": "SlotsConsolidated"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "meeting_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "date",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "docs": [],
+        "label": "MeetingRegistrationOpened"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "meeting_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "date",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "docs": [],
+        "label": "MeetingRegistrationClosed"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "meeting_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "date",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "docs": [],
+        "label": "MeetingCancelled"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "meeting_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 0
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "meeting_member",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "selection_date",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "docs": [],
+        "label": "SlotSelected"
+      },
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "update_date",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "docs": [],
+        "label": "ParamUpdated"
+      }
+    ],
+    "lang_error": {
+      "displayName": [
+        "ink",
+        "LangError"
+      ],
+      "type": 8
+    },
+    "messages": [
+      {
+        "args": [
+          {
+            "label": "s3_secret_key",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 4
+            }
+          },
+          {
+            "label": "s3_access_key",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 4
+            }
+          },
+          {
+            "label": "s3_platform",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 4
+            }
+          },
+          {
+            "label": "s3_region",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 4
+            }
+          },
+          {
+            "label": "s3_bucket",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 4
+            }
+          }
+        ],
+        "docs": [
+          " Initialize the S3 storage parameters"
+        ],
+        "label": "init_param",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 9
+        },
+        "selector": "0x35e1bc0a"
+      },
+      {
+        "args": [],
+        "docs": [
+          " Get the S3 infos"
+        ],
+        "label": "get_platform_info",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 13
+        },
+        "selector": "0xf8436626"
+      },
+      {
+        "args": [
+          {
+            "label": "object_key",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 4
+            }
+          }
+        ],
+        "docs": [
+          "  HTTP GETs and Decrypts the data from the specified storage platform as String."
+        ],
+        "label": "get_object_str",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 9
+        },
+        "selector": "0x70b9583b"
+      },
+      {
+        "args": [
+          {
+            "label": "object_key",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 4
+            }
+          },
+          {
+            "label": "payload",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 4
+            }
+          }
+        ],
+        "docs": [
+          " Encrypts and HTTP PUTs the data to the specified storage platform as byte stream."
+        ],
+        "label": "put_object_str",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 15
+        },
+        "selector": "0x9eedeb72"
+      },
+      {
+        "args": [
+          {
+            "label": "json_meeting_file",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 4
+            }
+          }
+        ],
+        "docs": [
+          " Create a new meeting  "
+        ],
+        "label": "create_meeting",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 17
+        },
+        "selector": "0xee5999da"
+      },
+      {
+        "args": [],
+        "docs": [
+          " Get the last meeting id"
+        ],
+        "label": "get_last_meeting_id",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 21
+        },
+        "selector": "0x47ba4c72"
+      },
+      {
+        "args": [],
+        "docs": [
+          " Get the last meeting created infos"
+        ],
+        "label": "get_last_meeting_created",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 9
+        },
+        "selector": "0x554e3cf1"
+      },
+      {
+        "args": [
+          {
+            "label": "meeting_id",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 0
+            }
+          }
+        ],
+        "docs": [
+          " Get the meeting"
+        ],
+        "label": "get_meeting",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 9
+        },
+        "selector": "0xadbf97dc"
+      },
+      {
+        "args": [
+          {
+            "label": "json_slots_file",
+            "type": {
+              "displayName": [
+                "String"
+              ],
+              "type": 4
+            }
+          }
+        ],
+        "docs": [
+          " Add the slots of a user in the meeting"
+        ],
+        "label": "add_slots",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 22
+        },
+        "selector": "0x9a7db6eb"
+      }
+    ]
+  },
+  "storage": {
+    "root": {
+      "layout": {
+        "struct": {
+          "fields": [
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 0
+                }
+              },
+              "name": "last_meeting_id"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 1
+                }
+              },
+              "name": "admin"
+            },
+            {
+              "layout": {
+                "enum": {
+                  "dispatchKey": "0x00000000",
+                  "name": "Option",
+                  "variants": {
+                    "0": {
+                      "fields": [],
+                      "name": "None"
+                    },
+                    "1": {
+                      "fields": [
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x00000000",
+                              "ty": 4
+                            }
+                          },
+                          "name": "0"
+                        }
+                      ],
+                      "name": "Some"
+                    }
+                  }
+                }
+              },
+              "name": "s3_access"
+            },
+            {
+              "layout": {
+                "enum": {
+                  "dispatchKey": "0x00000000",
+                  "name": "Option",
+                  "variants": {
+                    "0": {
+                      "fields": [],
+                      "name": "None"
+                    },
+                    "1": {
+                      "fields": [
+                        {
+                          "layout": {
+                            "leaf": {
+                              "key": "0x00000000",
+                              "ty": 4
+                            }
+                          },
+                          "name": "0"
+                        }
+                      ],
+                      "name": "Some"
+                    }
+                  }
+                }
+              },
+              "name": "s3_secret"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 4
+                }
+              },
+              "name": "s3_bucket"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 4
+                }
+              },
+              "name": "platform"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 4
+                }
+              },
+              "name": "region"
+            },
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 5
+                }
+              },
+              "name": "modif_date"
+            }
+          ],
+          "name": "Phat2meet"
+        }
+      },
+      "root_key": "0x00000000"
+    }
+  },
+  "types": [
+    {
+      "id": 0,
+      "type": {
+        "def": {
+          "primitive": "u32"
+        }
+      }
+    },
+    {
+      "id": 1,
+      "type": {
+        "def": {
+          "composite": {
+            "fields": [
+              {
+                "type": 2,
+                "typeName": "[u8; 32]"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "types",
+          "AccountId"
         ]
       }
     },
-    "types": [
-      {
-        "id": 0,
-        "type": {
-          "def": {
-            "primitive": "str"
+    {
+      "id": 2,
+      "type": {
+        "def": {
+          "array": {
+            "len": 32,
+            "type": 3
           }
         }
-      },
-      {
-        "id": 1,
-        "type": {
-          "def": {
-            "variant": {
-              "variants": [
-                {
-                  "fields": [
-                    {
-                      "type": 0
-                    }
-                  ],
-                  "index": 0,
-                  "name": "Ok"
-                },
-                {
-                  "fields": [
-                    {
-                      "type": 2
-                    }
-                  ],
-                  "index": 1,
-                  "name": "Err"
-                }
-              ]
-            }
-          },
-          "params": [
-            {
-              "name": "T",
-              "type": 0
-            },
-            {
-              "name": "E",
-              "type": 2
-            }
-          ],
-          "path": [
-            "Result"
-          ]
+      }
+    },
+    {
+      "id": 3,
+      "type": {
+        "def": {
+          "primitive": "u8"
         }
-      },
-      {
-        "id": 2,
-        "type": {
-          "def": {
-            "variant": {
-              "variants": [
-                {
-                  "index": 0,
-                  "name": "BadString"
-                }
-              ]
-            }
+      }
+    },
+    {
+      "id": 4,
+      "type": {
+        "def": {
+          "primitive": "str"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": {
+        "def": {
+          "primitive": "u64"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 7
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 8
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 7
           },
-          "path": [
-            "phat2MEET",
-            "phat2meet",
-            "Error"
+          {
+            "name": "E",
+            "type": 8
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "type": {
+        "def": {
+          "tuple": []
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 1,
+                "name": "CouldNotReadInput"
+              }
+            ]
+          }
+        },
+        "path": [
+          "ink_primitives",
+          "LangError"
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 10
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 8
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 10
+          },
+          {
+            "name": "E",
+            "type": 8
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 4
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 11
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 4
+          },
+          {
+            "name": "E",
+            "type": 11
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "ExistingMeeting"
+              },
+              {
+                "index": 1,
+                "name": "MissingStartDate"
+              },
+              {
+                "index": 2,
+                "name": "MissingMeetingId"
+              },
+              {
+                "index": 3,
+                "name": "MissingDescription"
+              },
+              {
+                "index": 4,
+                "name": "StartDateNotValid"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 4,
+                    "typeName": "String"
+                  }
+                ],
+                "index": 5,
+                "name": "MeetingError"
+              },
+              {
+                "index": 6,
+                "name": "UserHasAlreadySelectedSameSlot"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 4,
+                    "typeName": "String"
+                  }
+                ],
+                "index": 7,
+                "name": "InvalidSlot"
+              },
+              {
+                "index": 8,
+                "name": "OnlyOwner"
+              },
+              {
+                "index": 9,
+                "name": "NoPermissions"
+              },
+              {
+                "index": 10,
+                "name": "MeetingClosed"
+              },
+              {
+                "index": 11,
+                "name": "RegistrationClosed"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 12,
+                    "typeName": "u16"
+                  }
+                ],
+                "index": 12,
+                "name": "RequestFailed"
+              },
+              {
+                "index": 13,
+                "name": "EncryptionFailed"
+              },
+              {
+                "index": 14,
+                "name": "DecryptionFailed"
+              },
+              {
+                "index": 15,
+                "name": "PlatformNotFound"
+              },
+              {
+                "index": 16,
+                "name": "CredentialsNotSealed"
+              },
+              {
+                "index": 17,
+                "name": "AlreadyInitialized"
+              },
+              {
+                "index": 18,
+                "name": "DbRequestFailed"
+              },
+              {
+                "index": 19,
+                "name": "NoPathFound"
+              },
+              {
+                "index": 20,
+                "name": "S3ConnectionFailed"
+              },
+              {
+                "index": 21,
+                "name": "InvalidNumber"
+              },
+              {
+                "index": 22,
+                "name": "S3DeletionFailed"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 4,
+                    "typeName": "String"
+                  }
+                ],
+                "index": 23,
+                "name": "InvalidJsonFormat"
+              },
+              {
+                "index": 24,
+                "name": "InvalidTokenString"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 4,
+                    "typeName": "String"
+                  }
+                ],
+                "index": 25,
+                "name": "HourOutOfRange"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 4,
+                    "typeName": "String"
+                  }
+                ],
+                "index": 26,
+                "name": "DayOutofRange"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 4,
+                    "typeName": "String"
+                  }
+                ],
+                "index": 27,
+                "name": "InvalidDaySlot"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 4,
+                    "typeName": "String"
+                  }
+                ],
+                "index": 28,
+                "name": "InvalidHourSlot"
+              }
+            ]
+          }
+        },
+        "path": [
+          "phat2meet",
+          "phat2meet",
+          "Error"
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "type": {
+        "def": {
+          "primitive": "u16"
+        }
+      }
+    },
+    {
+      "id": 13,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 14
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 8
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 14
+          },
+          {
+            "name": "E",
+            "type": 8
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 14,
+      "type": {
+        "def": {
+          "tuple": [
+            4,
+            4,
+            4,
+            1
           ]
         }
       }
-    ]
-  }
+    },
+    {
+      "id": 15,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 16
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 8
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 16
+          },
+          {
+            "name": "E",
+            "type": 8
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 7
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 11
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 7
+          },
+          {
+            "name": "E",
+            "type": 11
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 18
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 8
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 18
+          },
+          {
+            "name": "E",
+            "type": 8
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 18,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 19
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 11
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 19
+          },
+          {
+            "name": "E",
+            "type": 11
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 19,
+      "type": {
+        "def": {
+          "tuple": [
+            20,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "id": 20,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "MeetingInputOpen"
+              },
+              {
+                "index": 1,
+                "name": "MeetingInputClosed"
+              },
+              {
+                "index": 2,
+                "name": "ConsolidationDone"
+              },
+              {
+                "index": 3,
+                "name": "CorrectionOpen"
+              },
+              {
+                "index": 4,
+                "name": "CorrectionClosed"
+              },
+              {
+                "index": 5,
+                "name": "MeetingCancelled"
+              },
+              {
+                "index": 6,
+                "name": "MeetingClosed"
+              },
+              {
+                "index": 7,
+                "name": "MeetingCreated"
+              }
+            ]
+          }
+        },
+        "path": [
+          "phat2meet",
+          "phat2meet",
+          "MeetingState"
+        ]
+      }
+    },
+    {
+      "id": 21,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 0
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 8
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 0
+          },
+          {
+            "name": "E",
+            "type": 8
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 22,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 23
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 8
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 23
+          },
+          {
+            "name": "E",
+            "type": 8
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 23,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 24
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 11
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 24
+          },
+          {
+            "name": "E",
+            "type": 11
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 24,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "index": 0,
+                "name": "SlotsOpen"
+              },
+              {
+                "index": 1,
+                "name": "SlotsUpdated"
+              },
+              {
+                "index": 2,
+                "name": "SlotsClosed"
+              },
+              {
+                "index": 3,
+                "name": "SlotInvalid"
+              },
+              {
+                "index": 4,
+                "name": "SlotValid"
+              }
+            ]
+          }
+        },
+        "path": [
+          "phat2meet",
+          "phat2meet",
+          "SlotsState"
+        ]
+      }
+    }
+  ],
+  "version": "4"
 }

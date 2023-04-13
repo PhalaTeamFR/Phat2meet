@@ -58,35 +58,42 @@ const userData = {
   availability: []
 }
 
+
+//0404202 0900
+//04042023 1515
+// heure en UTC
+//JSON.stringify(peopleData)
+
+
 const peopleData =
   [{
     name: 'Tioneb',
     availability: [
-      '0900-04032023',
-      '0915-04032023',
-      '0930-04032023',
-      '0945-04032023',
-      '1000-04032023',
-      '1500-04032023',
-      '1515-04032023',
-      '1230-07032023',
-      '1245-07032023',
-      '1300-07032023',
-      '1315-07032023',
-      '1400-08032023',
-      '1430-08032023',
+      '0900-04042023',
+      '0915-04042023',
+      '0930-04042023',
+      '0945-04042023',
+      '1000-04042023',
+      '1500-04042023',
+      '1515-04042023',
+      '1230-07042023',
+      '1245-07042023',
+      '1300-07042023',
+      '1315-07042023',
+      '1500-10042023',
+      '1530-10042023',
     ],
   }]
 
-const dateData = [{ start: 1677798000, end: 1678230000 }];
+const days_ranges = [{ start: 1680559200, end: 1680904800 }, { start: 1681077600, end: 1681423200 }];
 
-const timeData = [{ start: "0900", end: "1645" }];
+const hour_ranges = [{ start: "0900", end: "1245" }, { start: "1500", end: "1645" }];
 
 const TimeLocale = "fr-FR"
 
 // DATA END
 
-dateData.forEach((item) => {
+days_ranges.forEach((item) => {
   const startDate = new Date(item.start * 1000);
   const endDate = new Date(item.end * 1000);
 
@@ -103,9 +110,9 @@ dateData.forEach((item) => {
   }
 });
 
-// Converting timeData time slots to 15 minutes in "HHMM" format for each time slot in timeData.
-for (let i = 0; i < timeData.length; i++) {
-  const { start, end } = timeData[i];
+// Converting hour_ranges time slots to 15 minutes in "HHMM" format for each time slot in hour_ranges.
+for (let i = 0; i < hour_ranges.length; i++) {
+  const { start, end } = hour_ranges[i];
   const { hours: startHours, minutes: startMinutes } = parseTime(start);
   const { hours: endHours, minutes: endMinutes } = parseTime(end);
 
