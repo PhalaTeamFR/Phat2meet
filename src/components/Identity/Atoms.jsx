@@ -66,4 +66,4 @@ export const balanceAtom = atom(async (get) => {
 })
 
 // contract ID on phat-cb (contract address on polkadot.js.org/apps)
-export const contractIdAtom = "0x97a0fec3f3ee82041cb335afd6a5074bbb7a7a7f1227eda8b6583939bb2c7f59"
+export const contractIdAtom = "0xfcfe1813af28dda3933cba418ea45acd6bd7188d5b1a0108e83ec1d14fa8f290"
