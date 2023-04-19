@@ -190,7 +190,7 @@ const Event = () => {
       if (name.length !== 0) {
         setUser(prevUser => {
           const updatedUser = {
-            user_name: name,
+            name: name,
             address: currentAccount.address,
             availability: []
           };
@@ -261,7 +261,7 @@ const Event = () => {
         <TitleLarge>Phat2meet</TitleLarge>
       </StyledMain>
       <StyledMain>
-        <ContractCall />
+        <ContractCall user={user} />
       </StyledMain>
       <LoginSection id="login">
         <StyledMain>
@@ -280,7 +280,7 @@ const Event = () => {
                 />
 
                 <Button type="submit"
-                >Login</Button>
+                >Save</Button>
               </LoginForm>
               <Info>These details are only for this event. Use a password to prevent others from changing your availability.</Info>
             </>

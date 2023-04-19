@@ -22,7 +22,7 @@ import {
   currentAccountAtom
 } from '../components/Identity/Atoms'
 
-export function ContractCall() {
+export function ContractCall({ user }) {
 
   const profile = useAtomValue(currentAccountAtom)
 
@@ -47,6 +47,23 @@ export function ContractCall() {
 
 
   const messageInput = useRef();
+
+  const createUserMessage = (user) => {
+    if (!user) return null;
+
+    const availibility = user.availability;
+
+    const message = {
+      meeting_id: 1, // You will need to determine the appropriate value for meeting_id
+      user_id: user.address,
+      user_name: user.name,
+      availibility: availibility,
+    };
+
+    return JSON.stringify(message);
+  };
+
+  const userMessage = createUserMessage(user);
 
   useEffect(() => {
     if (api) {
@@ -169,10 +186,13 @@ export function ContractCall() {
       <Button disabled={!contract} onClick={doQuery}>
         do Query
       </Button>
-      <br></br>
-      <input type="text" ref={messageInput}></input>
-      <Button disabled={!(contract && profile?.address)} isLoading={isLoadingStatus} onClick={() => doTx(messageInput.current.value)}>{"Send TX"}</Button>
-      <br></br>
+      <Button
+        disabled={!(contract && profile?.address && userMessage)}
+        isLoading={isLoadingStatus}
+        onClick={() => doTx(userMessage)}
+      >
+        {"Send TX"}
+      </Button><br></br>
       <br></br>
       txStatus :
       <div>{txStatus}</div>
