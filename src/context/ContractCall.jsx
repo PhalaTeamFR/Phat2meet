@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useAtomValue } from 'jotai';
 // Phala sdk beta!!
 // install with `yarn add @phala/sdk@beta`
@@ -25,14 +25,14 @@ import {
 export function ContractCall({ user }) {
 
   const profile = useAtomValue(currentAccountAtom)
-
+  const account = useAtomValue(currentAccountAtom)
 
   const [contract, setContract] = useState();
   const [phatLastMeetingCreated, setLastMeetingCreated] = useState();
 
   const { setHourRanges, setSlotsRanges, setParticipants } = useEventContext();
 
-  const { account, setAccount, queryPair, getSigner } = useContext(AppContext);
+  const { setAccount, queryPair, getSigner } = useContext(AppContext);
 
   useEffect(() => {
     if (profile) {
@@ -44,9 +44,6 @@ export function ContractCall({ user }) {
 
   const [txStatus, setTxStatus] = useState("");
   const [isLoadingStatus, setIsLoadingStatus] = useState(false);
-
-
-  const messageInput = useRef();
 
   const createUserMessage = (user) => {
     if (!user) return null;
