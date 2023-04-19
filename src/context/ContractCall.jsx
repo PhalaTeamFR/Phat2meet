@@ -1,30 +1,52 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useRef, useContext, useEffect, useState } from 'react';
 import { useAtomValue } from 'jotai';
 // Phala sdk beta!!
 // install with `yarn add @phala/sdk@beta`
 // tested and working with @phala/sdk@0.4.0-nightly-20230318
 import { PinkContractPromise, OnChainRegistry } from '@phala/sdk'
+import toast, { Toaster } from 'react-hot-toast';
+
+import {
+  Button,
+  Error,
+} from '../components/'
 
 import { AppContext } from "./ContextProvider"
 import { useEventContext } from './EventContext';
-
 
 import metadata from '../contrat/metadata.json';
 
 import { rpcApiInstanceAtom } from '../components/Atoms/FoundationBase';
 
+import {
+  currentAccountAtom
+} from '../components/Identity/Atoms'
 
 export function ContractCall() {
+
+  const profile = useAtomValue(currentAccountAtom)
+
 
   const [contract, setContract] = useState();
   const [phatLastMeetingCreated, setLastMeetingCreated] = useState();
 
   const { setHourRanges, setSlotsRanges, setParticipants } = useEventContext();
 
-  const { queryPair } = useContext(AppContext);
+  const { account, setAccount, queryPair, getSigner } = useContext(AppContext);
 
+  useEffect(() => {
+    if (profile) {
+      setAccount(profile)
+    }
+  }, [profile])
 
   const api = useAtomValue(rpcApiInstanceAtom)
+
+  const [txStatus, setTxStatus] = useState("");
+  const [isLoadingStatus, setIsLoadingStatus] = useState(false);
+
+
+  const messageInput = useRef();
 
   useEffect(() => {
     if (api) {
@@ -80,7 +102,6 @@ export function ContractCall() {
     const slotsRangesData = parsedData.slots_ranges;
     const participantsData = parsedData.participants;
 
-
     setHourRanges(hourRangesData);
     setSlotsRanges(slotsRangesData);
     setParticipants(participantsData);
@@ -89,11 +110,72 @@ export function ContractCall() {
   };
 
 
+  // function to send a tx, in this example we call addSlots
+  const doTx = async (message) => {
+    console.log(message)
+    if (!contract) return;
+    setIsLoadingStatus(true);
+    const signer = await getSigner(account);
+    // costs estimation
+    const { gasRequired, storageDeposit } = await contract.query['addSlots']({ account: account, signer }, message)
+    console.log('gasRequired & storageDeposit: ', gasRequired, storageDeposit)
+    // transaction / extrinct
+    const options = {
+      gasLimit: gasRequired.refTime,
+      storageDepositLimit: storageDeposit.isCharge ? storageDeposit.asCharge : null,
+    }
+
+    const tx = await contract.tx
+      .addSlots(options, message)
+      .signAndSend(profile.address, { signer }, (result) => {
+        if (result.status.isInBlock) {
+          setTxStatus(`In Block: Transaction included at blockHash ${result.status.asInBlock}`);
+          toast.success("In Block", { duration: 6000 });
+        } else if (result.status.isInvalid) {
+          tx();
+          reject('Invalid transaction');
+          toast.error("Invalid transaction");
+        }
+
+        if (result.status.isCompleted) {
+          setTxStatus("Completed");
+          toast.success("Completed");
+        }
+        if (result.status.isFinalized) {
+          setTxStatus(true);
+          setIsLoadingStatus(false);
+          toast.success(`Transaction included at blockHash ${result.status.asFinalized}`, {
+            duration: 6000,
+          });
+
+          toast.success(`Transaction hash ${result.txHash.toHex()}`, {
+            duration: 6000,
+          });
+
+          // Loop through Vec<EventRecord> to display all events
+          result.events.forEach(({ phase, event: { data, method, section } }) => {
+            console.log(`\t' ${phase}: ${section}.${method}:: ${data}`);
+          });
+        }
+      });
+  };
+
   return (
     <>
-      <button disabled={!contract} onClick={doQuery}>
+      <div><Toaster /></div>
+      {(!account?.address) && (
+        <Error>Please log in with your wallet first</Error>
+      )}
+      <Button disabled={!contract} onClick={doQuery}>
         do Query
-      </button>
+      </Button>
+      <br></br>
+      <input type="text" ref={messageInput}></input>
+      <Button disabled={!(contract && profile?.address)} isLoading={isLoadingStatus} onClick={() => doTx(messageInput.current.value)}>{"Send TX"}</Button>
+      <br></br>
+      <br></br>
+      txStatus :
+      <div>{txStatus}</div>
     </>
   );
 };

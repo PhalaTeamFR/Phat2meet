@@ -96,7 +96,7 @@ export const useContract = () => {
       storageDepositLimit: storageDeposit.isCharge ? storageDeposit.asCharge : null,
     };
     const tx = await contract.tx
-      .setValue(options, message)
+      .addSlots(options, message)
       .signAndSend(profile.address, { signer }, (result) => {
         if (result.status.isInBlock) {
           setTxStatus(`In Block: Transaction included at blockHash ${result.status.asInBlock}`);
@@ -138,5 +138,6 @@ export const useContract = () => {
     txStatus,
     isLoadingStatus,
     doQuery,
+    getSigner,
   };
 };

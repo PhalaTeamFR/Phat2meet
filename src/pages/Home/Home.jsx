@@ -2,12 +2,6 @@ import { useEffect, useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import toast, { Toaster } from "react-hot-toast";
 
-import { useAtomValue } from 'jotai'
-
-import {
-  currentAccountAtom
-} from '../../components/Identity/Atoms'
-
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
@@ -24,7 +18,6 @@ import {
 
 import {
   StyledMain,
-  StyledMainTest,
   TitleSmall,
   TitleLarge,
   CreateForm

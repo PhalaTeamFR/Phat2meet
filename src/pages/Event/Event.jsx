@@ -36,6 +36,7 @@ import {
   StyledMain,
   TitleSmall,
   TitleLarge,
+  StyledMatrix,
 } from '../Home/Home.styles'
 
 import {
@@ -47,16 +48,6 @@ import { convertParticipantsData } from "./ConvertParticipants";
 
 // DATA
 
-const eventData2 = {
-  "id": "test-111159",
-  "times": ['0900', '0915', '0930', '0945', '1000', '1015', '1030', '1045', '1100', '1115', '1130', '1145', '1200', '1215', '1230', '1245', '1300', '1315', '1330', '1345', '1400', '1415', '1430', '1445', '1500', '1515', '1530', '1545', '1600', '1615', '1630', '1645'],
-  "dates": ['03032021', '04032021', '05032021', '07032021', '08032021'],
-}
-
-const userData = {
-  name: 'Ric',
-  availability: []
-}
 
 
 //0404202 0900
@@ -199,7 +190,7 @@ const Event = () => {
       if (name.length !== 0) {
         setUser(prevUser => {
           const updatedUser = {
-            name: name,
+            user_name: name,
             address: currentAccount.address,
             availability: []
           };
@@ -327,34 +318,36 @@ const Event = () => {
         </Tabs>
       </StyledMain>
 
-      {tab === 'group' ? (
-        <section id="group">
-          <StyledMain>
-            <Legend min={0} max={people.length} />
-            <Center>Hover or tap the calendar below to see who is available</Center>
-          </StyledMain>
-          <AvailabilityViewer
-            dates={event?.dates ?? []}
-            times={event?.times ?? []}
-            people={showNames ? people : [user]}
-          />
-        </section>
-      ) : (
-        <section id="you">
-          <StyledMain>
-            <Center>Click and drag the calendar below to set your availabilities</Center>
-          </StyledMain>
-          <AvailabilityEditor
-            dates={event?.dates ?? []}
-            times={event?.times ?? []}
-            value={user?.availability}
-            onChange={onChangeAvailability}
-          />
-          <StyledMain>
-            <Button onClick={handleUpdate}>Update availabilities</Button>
-          </StyledMain>
-        </section>
-      )}
+      <StyledMatrix>
+        {tab === 'group' ? (
+          <section id="group">
+            <StyledMain>
+              <Legend min={0} max={people.length} />
+              <Center>Hover or tap the calendar below to see who is available</Center>
+            </StyledMain>
+            <AvailabilityViewer
+              dates={event?.dates ?? []}
+              times={event?.times ?? []}
+              people={showNames ? people : [user]}
+            />
+          </section>
+        ) : (
+          <section id="you">
+            <StyledMain>
+              <Center>Click and drag the calendar below to set your availabilities</Center>
+            </StyledMain>
+            <AvailabilityEditor
+              dates={event?.dates ?? []}
+              times={event?.times ?? []}
+              value={user?.availability}
+              onChange={onChangeAvailability}
+            />
+            <StyledMain>
+              <Button onClick={handleUpdate}>Update availabilities</Button>
+            </StyledMain>
+          </section>
+        )}
+      </StyledMatrix>
     </>
   );
 };

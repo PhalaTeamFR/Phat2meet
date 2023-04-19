@@ -4,11 +4,17 @@ export const StyledMain = styled('div')`
   width: 800px;
   margin: 20px auto;
   max-width: calc(100% - 60px);
+  magin-bottom : 20px
 
   * {
     text-align: left;
   }
 `
+
+export const StyledMatrix = styled('div')`
+  min-height: 40rem;
+`
+
 
 export const StyledMainTest = styled('div')`
   width: 800px;
