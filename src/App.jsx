@@ -7,6 +7,8 @@ import EventPage from '/src/pages/Event/Event'
 
 import { Settings, ProviderInfo, Loading } from '/src/components'
 import FoundationProvider from '../src/components/Foundation/Provider'
+import { ContextProvider } from "./context/ContextProvider";
+import { EventProvider } from './context/EventContext';
 
 import { rpcEndpointAtom } from './components/Atoms/FoundationBase'
 
@@ -20,26 +22,28 @@ const App = () => {
 
   return (
     <>
-
-      <FoundationProvider
-        initialValues={initialValues}
-        routes={[
-          { path: "/home", element: <HomePage /> },
-          { path: "/", element: <EventPage /> },
-        ]}
-      >
-        <div>
-          <Link to="/home">Home</Link>
-          <br />
-          <Link to="/">EVENT</Link>
-        </div>
-        <Suspense fallback={<div />}>
-          <Settings />
-          <ProviderInfo />
-        </Suspense>
-        <Outlet />
-      </FoundationProvider>
-
+      <EventProvider>
+        <ContextProvider>
+          <FoundationProvider
+            initialValues={initialValues}
+            routes={[
+              { path: "/home", element: <HomePage /> },
+              { path: "/", element: <EventPage /> },
+            ]}
+          >
+            <div>
+              <Link to="/home">Home</Link>
+              <br />
+              <Link to="/">EVENT</Link>
+            </div>
+            <Suspense fallback={<div />}>
+              <Settings />
+              <ProviderInfo />
+            </Suspense>
+            <Outlet />
+          </FoundationProvider>
+        </ContextProvider>
+      </EventProvider>
     </>
   )
 }

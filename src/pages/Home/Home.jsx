@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import toast, { Toaster } from "react-hot-toast";
 
-import { useContract } from '../../context/ContextProvider';
 import { useAtomValue } from 'jotai'
 
 import {
@@ -111,13 +110,6 @@ const Home = () => {
     }
   }
 
-  const { contract, phatMessage, doTx, txStatus, isLoadingStatus, doQuery } = useContract();
-
-  const profile = useAtomValue(currentAccountAtom)
-
-  const messageInput = useRef();
-
-
   return (
     <>
       <div>
@@ -127,36 +119,6 @@ const Home = () => {
         <TitleSmall>Create a</TitleSmall>
         <TitleLarge>Phat2meet</TitleLarge>
       </StyledMain>
-
-      <StyledMainTest>
-        <TitleSmall>Test Phase phatContract</TitleSmall>
-        {(!profile?.address) && (
-          <Error>Please log in with your wallet first</Error>
-        )}
-        <div>message to phatContract:
-          <span>{phatMessage}</span></div><br />
-        <Button disabled={!(contract)} onClick={doQuery}>
-          do Query
-        </Button>
-
-
-        {(contract && profile?.address) && (
-          <>
-
-
-            <TextField
-              label="Signer message test"
-              subLabel=""
-              type="text"
-              id="name"
-              ref={messageInput}
-            />
-            <Button disabled={!(contract && profile?.address)} isLoading={isLoadingStatus} onClick={() => doTx(messageInput.current.value)}>{"Send your message"}</Button>
-            <div>Status: {txStatus}</div>
-
-          </>
-        )}
-      </StyledMainTest>
 
       <StyledMain>
         <Error open={!!error} onClose={() => setError(null)}>{error}</Error>

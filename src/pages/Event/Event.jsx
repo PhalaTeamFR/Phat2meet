@@ -1,7 +1,9 @@
 import { useForm } from 'react-hook-form';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 import { useAtom } from 'jotai'
+
+import { useEventContext } from '../../context/EventContext';
 
 import {
   Center,
@@ -40,6 +42,9 @@ import {
   currentProfileAtom,
 } from '../../components/Identity/Atoms'
 
+import { ContractCall } from "../../context/ContractCall";
+import { convertParticipantsData } from "./ConvertParticipants";
+
 // DATA
 
 const eventData2 = {
@@ -47,11 +52,6 @@ const eventData2 = {
   "times": ['0900', '0915', '0930', '0945', '1000', '1015', '1030', '1045', '1100', '1115', '1130', '1145', '1200', '1215', '1230', '1245', '1300', '1315', '1330', '1345', '1400', '1415', '1430', '1445', '1500', '1515', '1530', '1545', '1600', '1615', '1630', '1645'],
   "dates": ['03032021', '04032021', '05032021', '07032021', '08032021'],
 }
-
-const eventData = {
-  "times": [],
-  "dates": []
-};
 
 const userData = {
   name: 'Ric',
@@ -64,75 +64,79 @@ const userData = {
 // heure en UTC
 //JSON.stringify(peopleData)
 
-
 const peopleData =
-  [{
-    name: 'Tioneb',
-    availability: [
-      '0900-04042023',
-      '0915-04042023',
-      '0930-04042023',
-      '0945-04042023',
-      '1000-04042023',
-      '1500-04042023',
-      '1515-04042023',
-      '1230-07042023',
-      '1245-07042023',
-      '1300-07042023',
-      '1315-07042023',
-      '1500-10042023',
-      '1530-10042023',
-    ],
-  }]
-
-const days_ranges = [{ start: 1680559200, end: 1680904800 }, { start: 1681077600, end: 1681423200 }];
-
-const hour_ranges = [{ start: "0900", end: "1245" }, { start: "1500", end: "1645" }];
+  []
 
 const TimeLocale = "fr-FR"
 
 // DATA END
 
-days_ranges.forEach((item) => {
-  const startDate = new Date(item.start * 1000);
-  const endDate = new Date(item.end * 1000);
+const eventData = {
+  "times": [],
+  "dates": []
+};
 
-  let currentDate = startDate;
+console.log('eventData', eventData)
 
-  while (currentDate.getTime() < endDate.getTime()) {
-    const dateToAdd = toDateLocaleString(currentDate, TimeLocale);
 
-    if (!eventData.dates.includes(dateToAdd)) {
-      eventData.dates.push(dateToAdd);
-    }
-
-    currentDate = incrementDateByDays(currentDate, 1);
-  }
-});
-
-// Converting hour_ranges time slots to 15 minutes in "HHMM" format for each time slot in hour_ranges.
-for (let i = 0; i < hour_ranges.length; i++) {
-  const { start, end } = hour_ranges[i];
-  const { hours: startHours, minutes: startMinutes } = parseTime(start);
-  const { hours: endHours, minutes: endMinutes } = parseTime(end);
-
-  let startTime = createTime(startHours, startMinutes);
-  const endTime = createTime(endHours, endMinutes);
-
-  while (startTime <= endTime) {
-    const hours = padZero(startTime.getHours());
-    const minutes = padZero(startTime.getMinutes());
-
-    eventData.times.push(`${hours}${minutes}`);
-
-    startTime = incrementTimeByMinutes(startTime, 15);
-  }
-}
-//
-
-console.log('eventData', eventData);
 
 const Event = () => {
+  //const days_ranges = [{ start: 1680559200, end: 1680904800 }, { start: 1681077600, end: 1681423200 }];
+  //const hour_ranges = [{ start: "0900", end: "1245" }, { start: "1500", end: "1645" }];
+  const { hourRanges, slotsRanges, participants } = useEventContext();
+
+  console.log('hourRanges useEventContext', hourRanges)
+  console.log('slotsRanges useEventContext', slotsRanges)
+
+
+  useEffect(() => {
+    if (participants.length > 0) {
+      const convertedData = convertParticipantsData(participants);
+      setPeople(convertedData);
+    }
+  }, [participants]);
+
+  //
+  slotsRanges.forEach((item) => {
+    const startDate = new Date(item.start * 1000);
+    const endDate = new Date(item.end * 1000);
+
+    let currentDate = startDate;
+
+    while (currentDate.getTime() < endDate.getTime()) {
+      const dateToAdd = toDateLocaleString(currentDate, TimeLocale);
+
+      if (!eventData.dates.includes(dateToAdd)) {
+        eventData.dates.push(dateToAdd);
+      }
+
+      currentDate = incrementDateByDays(currentDate, 1);
+    }
+  });
+  //
+  // Converting hour_ranges time slots to 15 minutes in "HHMM" format for each time slot in hour_ranges.
+  eventData.times = hourRanges.reduce((acc, range) => {
+    const { start, end } = range;
+    const { hours: startHours, minutes: startMinutes } = parseTime(start);
+    const { hours: endHours, minutes: endMinutes } = parseTime(end);
+
+    let startTime = createTime(startHours, startMinutes);
+    const endTime = createTime(endHours, endMinutes);
+
+    while (startTime <= endTime) {
+      const hours = padZero(startTime.getHours());
+      const minutes = padZero(startTime.getMinutes());
+
+      acc.push(`${hours}${minutes}`);
+
+      startTime = incrementTimeByMinutes(startTime, 15);
+    }
+
+    return acc;
+  }, []);
+  //
+
+  const peopleData = convertParticipantsData(participants);
 
   const { register, handleSubmit } = useForm();
   const [user, setUser] = useState();
@@ -143,6 +147,8 @@ const Event = () => {
 
   const [showNames, setShowNames] = useState(true);
   const [currentAccount] = useAtom(currentProfileAtom);
+
+  console.log('event', event)
 
   const toggleShowNames = () => {
     setShowNames(prevState => !prevState);
@@ -263,7 +269,9 @@ const Event = () => {
         <TitleSmall>Event</TitleSmall>
         <TitleLarge>Phat2meet</TitleLarge>
       </StyledMain>
-
+      <StyledMain>
+        <ContractCall />
+      </StyledMain>
       <LoginSection id="login">
         <StyledMain>
           {!user && (
