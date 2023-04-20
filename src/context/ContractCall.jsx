@@ -44,13 +44,16 @@ export function ContractCall({ user }) {
   const [txStatus, setTxStatus] = useState("");
   const [isLoadingStatus, setIsLoadingStatus] = useState(false);
 
-  const createUserMessage = (user) => {
-    if (!user) return null;
+  const createUserMessage = (user, parsedData) => {
+    if (!user || !parsedData || !parsedData.meeting_id) return null;
 
     const availibility = user.availability;
+    const meetingIdData = parsedData.meeting_id;
+
+    console.log('createUserMessage', meetingIdData)
 
     const message = {
-      meeting_id: 1, // You will need to determine the appropriate value for meeting_id
+      meeting_id: meetingIdData, // You will need to determine the appropriate value for meeting_id
       user_id: user.address,
       user_name: user.name,
       availibility: availibility,
@@ -59,7 +62,7 @@ export function ContractCall({ user }) {
     return JSON.stringify(message);
   };
 
-  const userMessage = createUserMessage(user);
+  const userMessage = createUserMessage(user, phatLastMeetingCreated);
 
   useEffect(() => {
     if (api) {
@@ -118,6 +121,9 @@ export function ContractCall({ user }) {
     setHourRanges(hourRangesData);
     setSlotsRanges(slotsRangesData);
     setParticipants(participantsData);
+
+    // Call createUserMessage with user and parsedData
+    const userMessage = createUserMessage(parsedData);
 
     console.log('message getLastMeetingCreated:', JSON.parse(message.output.value.value).hour_ranges)
   };
