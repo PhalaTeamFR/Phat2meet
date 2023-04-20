@@ -67,11 +67,11 @@ export function ContractCall({ user }) {
     }
   }, [api])
 
-  //useEffect(() => {
-  //if (contract) {
-  //doQuery();
-  //}
-  //}, [contract]);
+  useEffect(() => {
+    if (contract) {
+      doQuery();
+    }
+  }, [contract]);
 
   const loadContract = async () => {
 

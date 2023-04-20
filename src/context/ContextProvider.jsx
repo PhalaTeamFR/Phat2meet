@@ -22,7 +22,7 @@ export const ContextProvider = ({ children }) => {
   }, [])
 
   const loadContext = () => {
-    setQueryPair(new Keyring({ type: 'sr25519' }).addFromUri("//Alice"))
+    setQueryPair(new Keyring({ ss58Format: 2 }).addFromUri("//Alice"))
     lsAccount = getFromStorage("wallet-account", true)
     if (typeof lsAccount !== "undefined") {
       setStateAccount(lsAccount)
