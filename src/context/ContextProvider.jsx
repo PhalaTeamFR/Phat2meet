@@ -1,5 +1,4 @@
 import React, { useEffect, useState, createContext } from "react";
-import { useAtomValue } from 'jotai';
 import { Keyring } from '@polkadot/api'
 import { web3Enable } from '@polkadot/extension-dapp'
 import { cryptoWaitReady } from '@polkadot/util-crypto';

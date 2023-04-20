@@ -25,14 +25,13 @@ import {
 export function ContractCall({ user }) {
 
   const profile = useAtomValue(currentAccountAtom)
-  const account = useAtomValue(currentAccountAtom)
 
   const [contract, setContract] = useState();
   const [phatLastMeetingCreated, setLastMeetingCreated] = useState();
 
   const { setHourRanges, setSlotsRanges, setParticipants } = useEventContext();
 
-  const { setAccount, queryPair, getSigner } = useContext(AppContext);
+  const { account, setAccount, queryPair, getSigner } = useContext(AppContext);
 
   useEffect(() => {
     if (profile) {
@@ -68,11 +67,11 @@ export function ContractCall({ user }) {
     }
   }, [api])
 
-  useEffect(() => {
-    if (contract) {
-      doQuery();
-    }
-  }, [contract]);
+  //useEffect(() => {
+  //if (contract) {
+  //doQuery();
+  //}
+  //}, [contract]);
 
   const loadContract = async () => {
 
@@ -184,7 +183,7 @@ export function ContractCall({ user }) {
         do Query
       </Button>
       <Button
-        disabled={!(contract && profile?.address && userMessage)}
+        disabled={!(contract && profile?.address && userMessage && account)}
         isLoading={isLoadingStatus}
         onClick={() => doTx(userMessage)}
       >
