@@ -92,7 +92,7 @@ const Home = () => {
       }, [])
 
       if (times.length === 0) {
-        return setError('home:form.errors.no_time')
+        return setError(`You don't have any time selected`);
       }
 
     } catch (e) {

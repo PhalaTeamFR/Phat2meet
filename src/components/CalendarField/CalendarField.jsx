@@ -1,44 +1,48 @@
-import { useState, useEffect, useRef, forwardRef } from 'react'
-import dayjs from 'dayjs'
-import isToday from 'dayjs/plugin/isToday'
-import localeData from 'dayjs/plugin/localeData'
+import { useState, useEffect, useRef, forwardRef } from 'react';
+import dayjs from 'dayjs';
+import isToday from 'dayjs/plugin/isToday';
+import localeData from 'dayjs/plugin/localeData';
 import updateLocale from 'dayjs/plugin/updateLocale'
 
+import { Button } from '../';
 import {
   Wrapper,
   StyledLabel,
   StyledSubLabel,
+  CalendarHeader,
+  CalendarDays,
   CalendarBody,
   Date,
-} from './CalendarField.styles'
+  Day,
+} from './CalendarField.styles';
 
-dayjs.extend(isToday)
-dayjs.extend(localeData)
+dayjs.extend(isToday);
+dayjs.extend(localeData);
 dayjs.extend(updateLocale)
 
-const calculateMonth = (month, year, weekStart) => {
-  const date = dayjs().month(month).year(year)
-  const daysInMonth = date.daysInMonth()
-  const daysBefore = date.date(1).day() - weekStart
-  const daysAfter = 6 - date.date(daysInMonth).day() + weekStart
+const calculateMonth = (month, year) => {
+  const date = dayjs().month(month).year(year);
+  const daysInMonth = date.daysInMonth();
+  const daysBefore = date.date(1).day();
+  const daysAfter = 6 - date.date(daysInMonth).day();
 
-  const dates = []
-  let curDate = date.date(1).subtract(daysBefore, 'day')
-  let y = 0
-  let x = 0
+  let dates = [];
+  let curDate = date.date(1).subtract(daysBefore, 'day');
+  let y = 0;
+  let x = 0;
   for (let i = 0; i < daysBefore + daysInMonth + daysAfter; i++) {
-    if (x === 0) dates[y] = []
-    dates[y][x] = curDate.clone()
-    curDate = curDate.add(1, 'day')
-    x++
+    if (x === 0) dates[y] = [];
+    dates[y][x] = curDate.clone();
+    curDate = curDate.add(1, 'day');
+    x++;
     if (x > 6) {
-      x = 0
-      y++
+      x = 0;
+      y++;
     }
   }
 
-  return dates
-}
+  return dates;
+};
 
 const CalendarField = forwardRef(({
   label,
@@ -50,17 +54,22 @@ const CalendarField = forwardRef(({
   const weekStart = 0
   const locale = 'en'
 
-  const [type] = useState(1)
+  const [type, setType] = useState(0)
 
-  const [selectedDates] = useState([])
+  const [dates, setDates] = useState(calculateMonth(dayjs().month(), dayjs().year(), weekStart))
+  const [month, setMonth] = useState(dayjs().month())
+  const [year, setYear] = useState(dayjs().year())
+
+  const [selectedDates, setSelectedDates] = useState([])
+  const [selectingDates, _setSelectingDates] = useState([])
+  const staticSelectingDates = useRef([])
+  const setSelectingDates = newDates => {
+    staticSelectingDates.current = newDates
+    _setSelectingDates(newDates)
+  }
 
   const [selectedDays, setSelectedDays] = useState([])
   const [selectingDays, _setSelectingDays] = useState([])
-  const staticSelectingDays = useRef([])
-  const setSelectingDays = newDays => {
-    staticSelectingDays.current = newDays
-    _setSelectingDays(newDays)
-  }
 
   const startPos = useRef({})
   const staticMode = useRef(null)
@@ -76,8 +85,8 @@ const CalendarField = forwardRef(({
     if (dayjs.Ls?.[locale] && weekStart !== dayjs.Ls[locale].weekStart) {
       dayjs.updateLocale(locale, { weekStart })
     }
-
-  }, [weekStart, locale])
+    setDates(calculateMonth(month, year, weekStart))
+  }, [weekStart, month, year, locale])
 
   return (
     <Wrapper locale={locale}>
@@ -90,56 +99,92 @@ const CalendarField = forwardRef(({
         value={type ? JSON.stringify(selectedDays) : JSON.stringify(selectedDates)}
         {...props}
       />
-
+      <CalendarHeader>
+        <Button
+          size="30px"
+          title={('previous')}
+          onClick={() => {
+            if (month - 1 < 0) {
+              setYear(year - 1)
+              setMonth(11)
+            } else {
+              setMonth(month - 1)
+            }
+          }}
+        >&lt;</Button>
+        <span>{dayjs.months()[month]} {year}</span>
+        <Button
+          size="30px"
+          title={('next')}
+          onClick={() => {
+            if (month + 1 > 11) {
+              setYear(year + 1)
+              setMonth(0)
+            } else {
+              setMonth(month + 1)
+            }
+          }}
+        >&gt;</Button>
+      </CalendarHeader>
+      <CalendarDays>
+        {(weekStart ? [...dayjs.weekdaysShort().filter((_, i) => i !== 0), dayjs.weekdaysShort()[0]] : dayjs.weekdaysShort()).map(name =>
+          <Day key={name}>{name}</Day>
+        )}
+      </CalendarDays>
       <CalendarBody>
-        {(weekStart ? [...dayjs.weekdaysShort().filter((_, i) => i !== 0), dayjs.weekdaysShort()[0]] : dayjs.weekdaysShort()).map((name, i) =>
-          <Date
-            key={name}
-            $isToday={(weekStart ? [...dayjs.weekdaysShort().filter((_, i) => i !== 0), dayjs.weekdaysShort()[0]] : dayjs.weekdaysShort())[dayjs().day() - weekStart === -1 ? 6 : dayjs().day() - weekStart] === name}
-            title={(weekStart ? [...dayjs.weekdaysShort().filter((_, i) => i !== 0), dayjs.weekdaysShort()[0]] : dayjs.weekdaysShort())[dayjs().day() - weekStart === -1 ? 6 : dayjs().day() - weekStart] === name ? 'today' : ''}
-            $selected={selectedDays.includes(((i + weekStart) % 7 + 7) % 7)}
-            $selecting={selectingDays.includes(((i + weekStart) % 7 + 7) % 7)}
-            $mode={mode}
-            type="button"
-            onKeyPress={e => {
-              if (e.key === ' ' || e.key === 'Enter') {
-                if (selectedDays.includes(((i + weekStart) % 7 + 7) % 7)) {
-                  setSelectedDays(selectedDays.filter(d => d !== ((i + weekStart) % 7 + 7) % 7))
-                } else {
-                  setSelectedDays([...selectedDays, ((i + weekStart) % 7 + 7) % 7])
+        {dates.length > 0 && dates.map((dateRow, y) =>
+          dateRow.map((date, x) =>
+            <Date
+              key={y + x}
+              $otherMonth={date.month() !== month}
+              $isToday={date.isToday()}
+              title={`${date.date()} ${dayjs.months()[date.month()]}${date.isToday() ? ` (${('today')})` : ''}`}
+              $selected={selectedDates.includes(date.format('DDMMYYYY'))}
+              $selecting={selectingDates.includes(date)}
+              $mode={mode}
+              type="button"
+              onKeyPress={e => {
+                if (e.key === ' ' || e.key === 'Enter') {
+                  if (selectedDates.includes(date.format('DDMMYYYY'))) {
+                    setSelectedDates(selectedDates.filter(d => d !== date.format('DDMMYYYY')))
+                  } else {
+                    setSelectedDates([...selectedDates, date.format('DDMMYYYY')])
+                  }
                 }
-              }
-            }}
-            onPointerDown={e => {
-              startPos.current = i
-              setMode(selectedDays.includes(((i + weekStart) % 7 + 7) % 7) ? 'remove' : 'add')
-              setSelectingDays([((i + weekStart) % 7 + 7) % 7])
-              e.currentTarget.releasePointerCapture(e.pointerId)
+              }}
+              onPointerDown={e => {
+                startPos.current = { x, y }
+                setMode(selectedDates.includes(date.format('DDMMYYYY')) ? 'remove' : 'add')
+                setSelectingDates([date])
+                e.currentTarget.releasePointerCapture(e.pointerId)
 
-              document.addEventListener('pointerup', () => {
-                if (staticMode.current === 'add') {
-                  setSelectedDays([...selectedDays, ...staticSelectingDays.current])
-                } else if (staticMode.current === 'remove') {
-                  const toRemove = staticSelectingDays.current
-                  setSelectedDays(selectedDays.filter(d => !toRemove.includes(d)))
+                document.addEventListener('pointerup', () => {
+                  if (staticMode.current === 'add') {
+                    setSelectedDates([...selectedDates, ...staticSelectingDates.current.map(d => d.format('DDMMYYYY'))])
+                  } else if (staticMode.current === 'remove') {
+                    const toRemove = staticSelectingDates.current.map(d => d.format('DDMMYYYY'))
+                    setSelectedDates(selectedDates.filter(d => !toRemove.includes(d)))
+                  }
+                  setMode(null)
+                }, { once: true })
+              }}
+              onPointerEnter={() => {
+                if (staticMode.current) {
+                  const found = []
+                  for (let cy = Math.min(startPos.current.y, y); cy < Math.max(startPos.current.y, y) + 1; cy++) {
+                    for (let cx = Math.min(startPos.current.x, x); cx < Math.max(startPos.current.x, x) + 1; cx++) {
+                      found.push({ y: cy, x: cx })
+                    }
+                  }
+                  setSelectingDates(found.map(d => dates[d.y][d.x]))
                 }
-                setMode(null)
-              }, { once: true })
-            }}
-            onPointerEnter={() => {
-              if (staticMode.current) {
-                const found = []
-                for (let ci = Math.min(startPos.current, i); ci < Math.max(startPos.current, i) + 1; ci++) {
-                  found.push(((ci + weekStart) % 7 + 7) % 7)
-                }
-                setSelectingDays(found)
-              }
-            }}
-          >{name}</Date>
+              }}
+            >{date.date()}</Date>
+          )
         )}
       </CalendarBody>
     </Wrapper>
   )
 })
 
-export default CalendarField
+export default CalendarField;
