@@ -35,8 +35,7 @@ const TimeRangeField = forwardRef(({
     }
   }, [rangeRef])
 
-  useEffect(() => setValue(props.name, JSON.stringify({ start, end })), [start, end, setValue, props.name])
-
+  useEffect(() => setValue(props.name, JSON.stringify({ start: String(start).padStart(2, '0') + '00', end: String(end).padStart(2, '0') + '00' })), [start, end, setValue, props.name])
 
   const handleMouseMove = e => {
     if (isStartMoving.current || isEndMoving.current) {

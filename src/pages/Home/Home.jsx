@@ -46,8 +46,8 @@ const Home = () => {
     console.log('data onSubmit home', data)
 
     try {
-      const { start, end } = JSON.parse(data.times)
-      const dates = JSON.parse(data.dates)
+      const { start, end } = JSON.parse(data.hour_ranges)
+      const dates = JSON.parse(data.slots_ranges)
 
       if (dates.length === 0) {
         return setError('There aren\u2019t any dates selected')
@@ -92,7 +92,7 @@ const Home = () => {
       }, [])
 
       if (times.length === 0) {
-        return setError(`You don't have any time selected`);
+        return setError('home:form.errors.no_time')
       }
 
     } catch (e) {
@@ -126,18 +126,18 @@ const Home = () => {
           <CalendarField
             label="What dates might work?"
             subLabel="Click and drag to select"
-            id="dates"
+            id="slots_ranges"
             required
             setValue={setValue}
-            {...register('dates')}
+            {...register('slots_ranges')}
           />
           <TimeRangeField
             label="What times might work?"
             subLabel="Click and drag to select a time range"
-            id="times"
+            id="hour_ranges"
             required
             setValue={setValue}
-            {...register('times')}
+            {...register('hour_ranges')}
           />
           <Center>
             <Button type="submit" isLoading={isLoading} >{"Create"}</Button>
